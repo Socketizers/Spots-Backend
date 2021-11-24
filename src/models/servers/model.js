@@ -4,8 +4,8 @@
 // Model Schema
 //------------------------------------------------
 
-const serverModel = (sequelize, DataTypes) => {
-  sequelize.define("Servers", {
+const servers = (sequelize, DataTypes) => 
+  sequelize.define("servers", {
     name: { type: DataTypes.STRING, required: true, unique: true },
     description: { type: DataTypes.STRING, required: true },
     category: { type: DataTypes.STRING, required: true },
@@ -14,6 +14,14 @@ const serverModel = (sequelize, DataTypes) => {
     public: { type: DataTypes.BOOLEAN, required: true },
     users: { type: DataTypes.ARRAY(DataTypes.STRING) }
   });
-};
 
-module.exports = serverModel;
+
+// Server.associate = models =>{
+//   models.belongsTo(models.User,{
+//     foreignKey:{
+//       allowNull:false
+//     }
+//   })
+// }
+
+module.exports = servers;

@@ -4,7 +4,7 @@
 // Model Schema
 //------------------------------------------------
 
-const roomModel = (sequelize, DataTypes) => {
+const roomModel = (sequelize, DataTypes) => 
    sequelize.define("Rooms", {
     name: { type: DataTypes.STRING, required: true, unique: true },
     server_id: { type: DataTypes.INTEGER, required: true },
@@ -17,6 +17,6 @@ const roomModel = (sequelize, DataTypes) => {
     capacity:{type: DataTypes.INTEGER, defaultValue: 25},
     message_history: {type: DataTypes.ARRAY(DataTypes.STRING) },
   });
-};
+
 
 module.exports = roomModel;

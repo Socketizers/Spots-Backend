@@ -2,14 +2,13 @@
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 const SECRET = process.env.SECRET || "secretstring";
 
 //------------------------------------------------
-// Model Schema 
+// Model Schema
 //------------------------------------------------
 
-const userModel = (sequelize, DataTypes) => {
+const User = (sequelize, DataTypes) => {
   const model = sequelize.define("Users", {
     username: { type: DataTypes.STRING, required: true, unique: true },
     fullName: { type: DataTypes.STRING, required: true },
@@ -42,20 +41,18 @@ const userModel = (sequelize, DataTypes) => {
     },
   });
 
-  
-//------------------------------------------------
-// Securing the password before create the user
-//------------------------------------------------
+  //------------------------------------------------
+  // Securing the password before create the user
+  //------------------------------------------------
 
   model.beforeCreate(async (user) => {
     let hashedPass = await bcrypt.hash(user.password, 10);
     user.password = hashedPass;
   });
 
-
-//------------------------------------------------
-// Basic Authentication of the user
-//------------------------------------------------
+  // //------------------------------------------------
+  // // Basic Authentication of the user
+  // //------------------------------------------------
 
   model.authenticateBasic = async function (username, password) {
     const user = await this.findOne({ where: { username } });
@@ -66,9 +63,9 @@ const userModel = (sequelize, DataTypes) => {
     throw new Error("Invalid User");
   };
 
-//------------------------------------------------
-// Bearer Authentication of the user
-//------------------------------------------------
+  // //------------------------------------------------
+  // // Bearer Authentication of the user
+  // //------------------------------------------------
 
   model.authenticateToken = async function (token) {
     try {
@@ -86,4 +83,4 @@ const userModel = (sequelize, DataTypes) => {
   return model;
 };
 
-module.exports = userModel;
+module.exports = User;

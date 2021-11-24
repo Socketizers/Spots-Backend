@@ -4,7 +4,7 @@
 // Model Schema
 //------------------------------------------------
 
-const privateRoomModel = (sequelize, DataTypes) => {
+const privateRoomModel = (sequelize, DataTypes) => 
   sequelize.define("Private-Rooms", {
     name: { type: DataTypes.STRING, required: true, unique: true },
     user1_id: { type: DataTypes.INTEGER, required: true },
@@ -12,6 +12,6 @@ const privateRoomModel = (sequelize, DataTypes) => {
     queues: { type: DataTypes.ARRAY(DataTypes.STRING)  },
     message_history: { type: DataTypes.ARRAY(DataTypes.STRING) },
   });
-};
+
 
 module.exports = privateRoomModel;

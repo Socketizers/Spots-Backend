@@ -26,22 +26,22 @@ const privateRoomsTable = privateRoomsModel(sequelize, DataTypes);
 // Tables Relations
 
 //  Users - Servers
-// usersTable.hasMany(serversTable,{foreignKey:'user_id',sourceKey:'id'});
-// serversTable.belongsTo(usersTable,{foreignKey:'user_id',targetKey:'id'});
+usersTable.hasMany(serversTable,{foreignKey:'user_id',sourceKey:'id'});
+serversTable.belongsTo(serversTable,{foreignKey:'user_id',targetKey:'id'})
 
-// //  Servers - Rooms
-// serversTable.hasMany(roomsTable,{foreignKey:'server_id',sourceKey:'id'});
-// roomsTable.belongsTo(serversTable,{foreignKey:'server_id',targetKey:'id'});
+//  Servers - Rooms
+serversTable.hasMany(roomsTable,{foreignKey:'server_id',sourceKey:'id'});
+roomsTable.belongsTo(serversTable,{foreignKey:'server_id',targetKey:'id'});
 
-// //  Users - Private-Rooms
+//  Users - Private-Rooms
 
-// //For the first user
-// usersTable.hasMany(privateRoomsTable,{foreignKey:'user1_id',sourceKey:'id'});
-// privateRoomsTable.belongsTo(usersTable,{foreignKey:'user1_id',targetKey:'id'});
+//For the first user
+usersTable.hasMany(privateRoomsTable,{foreignKey:'user1_id',sourceKey:'id'});
+privateRoomsTable.belongsTo(usersTable,{foreignKey:'user1_id',targetKey:'id'});
 
 // //For the second user
-// usersTable.hasMany(privateRoomsTable,{foreignKey:'user2_id',sourceKey:'id'});
-// privateRoomsTable.belongsTo(usersTable,{foreignKey:'user2_id',targetKey:'id'});
+usersTable.hasMany(privateRoomsTable,{foreignKey:'user2_id',sourceKey:'id'});
+privateRoomsTable.belongsTo(usersTable,{foreignKey:'user2_id',targetKey:'id'});
 
 
 module.exports = {
