@@ -1,0 +1,37 @@
+const express = require("express");
+const app = express();
+const notFound = require("./error-handlers/404");
+const errorHandler = require("./error-handlers/500");
+const logger = require("./middleware/logger");
+const serverRout = require("./routes/server.routes");
+const authRouts = require("./routes/auth.routes");
+const { createServer } = require("http");
+app.use(logger);
+app.set("view engine", "pug");
+app.set("views", __dirname + "/views");
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+app.use("/public", express.static(__dirname + "/public"));
+app.get("/home", (req, res) => {
+  res.render("home");
+});
+
+app.use("/server", serverRout);
+app.use(authRouts);
+app.use("*", notFound);
+app.use(errorHandler);
+
+const server = createServer(app);
+
+const start = (Port) => {
+  server.listen(Port, () => {
+    console.log(`Server is running on port ${Port}`);
+  });
+};
+
+module.exports = {
+  start,
+  server,
+};
+require("./io/server.io");

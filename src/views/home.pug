@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    //- link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css")
+    script(defer, src="/socket.io/socket.io.js") 
+    script(defer, src="../public/app.js") 
+  body
+    .ui.sizer.vertical.segment
+      header.ui.huge.header
+        h1 spots
+    main
+      #room.ui.grid
+        form#room-form.ui.form
+          .field     
+            input(type="text", name="name", placeholder="Name")
+            input.field(type="text", name="room", placeholder="Room")
+          button.ui.button(type="submit") Join 
+        form#message-form.ui.form
+          .field
+            input(type="text", name="message", placeholder="message")
+          button.ui.button(type="submit") message 
+        #messages.ui
