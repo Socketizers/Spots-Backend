@@ -8,3 +8,9 @@ Spots is a chat app for people to connect together and share their stories, insp
 - Sana Ishaqat
 - Wesam Al-Qawasmeh
 
+<!-- ## Wireframe -->
+
+## UML 
+![uml](./assets/uml.jpg)
+## Database Schema
+![db](./assets/db_schema.jpg)
