@@ -4,9 +4,20 @@
 // Model Schema
 //------------------------------------------------
 
+<<<<<<< HEAD
 const roomModel = (sequelize, DataTypes) => 
    sequelize.define("Rooms", {
     name: { type: DataTypes.STRING, required: true, unique: true },
+=======
+const roomModel = (sequelize, DataTypes) => {
+  return sequelize.define("Rooms", {
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+      unique: true,
+      allowNull: false,
+    },
+>>>>>>> routesInit
     server_id: { type: DataTypes.INTEGER, required: true },
     users: { type: DataTypes.ARRAY(DataTypes.STRING) },
     type: {
@@ -14,8 +25,8 @@ const roomModel = (sequelize, DataTypes) =>
       required: true,
       defaultValue: "text",
     },
-    capacity:{type: DataTypes.INTEGER, defaultValue: 25},
-    message_history: {type: DataTypes.ARRAY(DataTypes.STRING) },
+    capacity: { type: DataTypes.INTEGER, defaultValue: 25 },
+    message_history: { type: DataTypes.ARRAY(DataTypes.STRING) },
   });
 
 
