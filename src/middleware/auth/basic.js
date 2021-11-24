@@ -2,6 +2,7 @@
 
 const base64 = require("base-64");
 const { users } = require("../../models/index");
+
 /**
  *
  * @param {Request} req
@@ -10,6 +11,8 @@ const { users } = require("../../models/index");
  * @returns {Promise<void>}
  * @description Basic Auth Middleware for Express Router Middleware
  */
+
+
 module.exports = async (req, res, next) => {
   if (!req.headers.authorization) {
     return _authError();
@@ -21,6 +24,6 @@ module.exports = async (req, res, next) => {
     req.user = await users.authenticateBasic(username, pass);
     next();
   } catch (e) {
-    res.status(403).send("Invalid Login ");
+    res.status(403).send("Invalid Login");
   }
 };

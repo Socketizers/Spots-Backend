@@ -5,6 +5,7 @@
  * @description  check if user has capability to access the resource or not
  * @returns a middleware function that checks if the user has the capability to access the route
  */
+
 module.exports = (capability) => {
   return (req, res, next) => {
     try {

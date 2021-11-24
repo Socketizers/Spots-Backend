@@ -54,15 +54,9 @@ const User = (sequelize, DataTypes) => {
     user.password = hashedPass;
   });
 
-<<<<<<< HEAD
-  // //------------------------------------------------
-  // // Basic Authentication of the user
-  // //------------------------------------------------
-=======
   //------------------------------------------------
   // Basic Authentication of the user
   //------------------------------------------------
->>>>>>> routesInit
 
   model.authenticateBasic = async function (username, password) {
     const user = await this.findOne({ where: { username } });
@@ -73,15 +67,9 @@ const User = (sequelize, DataTypes) => {
     throw new Error("Invalid User");
   };
 
-<<<<<<< HEAD
-  // //------------------------------------------------
-  // // Bearer Authentication of the user
-  // //------------------------------------------------
-=======
   //------------------------------------------------
   // Bearer Authentication of the user
   //------------------------------------------------
->>>>>>> routesInit
 
   model.authenticateToken = async function (token) {
     try {

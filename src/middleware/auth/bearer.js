@@ -10,6 +10,7 @@ const { users } = require("../../models/index");
  * @returns {Promise<void>}
  * @description This function is used to check if the token is valid
  */
+
 module.exports = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {

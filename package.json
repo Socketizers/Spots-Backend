@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node index.js",
     "test": "NODE_ENV=test jest",
     "dev": "NODE_ENV=development nodemon index.js",
-    "init":"sequelize db:create"
+    "init": "sequelize db:create"
   },
   "repository": {
     "type": "git",
