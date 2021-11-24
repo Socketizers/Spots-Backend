@@ -1,0 +1,38 @@
+{
+  "name": "Spots-Backend",
+  "version": "1.0.0",
+  "description": "Spots is a chat app for people to connect together and share their stories, inspirations, ideas, hobbies and talents. The app is for people on work groups, language groups, gaming clans, school groups, and anything like that. The users can create the groups they want to and invite all the people they want to them. Everybody joins in, chats it up, and has a good time. Beside, the application enable the users to organize thier groups into various channels similar to apps like Discord and Slack. Users can also directly message individuals and add calendar events for group activities. Another feature the application provide is the user can make a conference room where there is a presenter and audience and the presenter has all the controll.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Socketizers/Spots-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Socketizers/Spots-Backend/issues"
+  },
+  "homepage": "https://github.com/Socketizers/Spots-Backend#readme",
+  "dependencies": {
+    "base-64": "^1.0.0",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.1",
+    "sequelize": "^6.12.0-alpha.1",
+    "sequelize-cli": "^6.3.0",
+    "socket.io": "^4.4.0",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "supertest": "^6.1.6"
+  }
+}
