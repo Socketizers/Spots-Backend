@@ -1,6 +1,7 @@
 "use strict";
 
-const { users } = require("../models/index.js");
+const { users } = require("../../models/index");
+
 /**
  *
  * @param {import("express").Request} req

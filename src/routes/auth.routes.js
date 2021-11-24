@@ -1,33 +1,39 @@
 "use strict";
 const express = require("express");
 const authRoutes = express.Router();
-// const basic = require("../middleware/auth/basic");
-authRoutes.post("/sign-up", (req, res) => {
-  res.send("Sign Up");
+const basic = require("../middleware/auth/basic");
+const bearer = require("../middleware/auth/bearer");
+
+const { users } = require("../models/index");
+
+authRoutes.post("/sign-up", async (req, res) => {
   try {
-    //  const servers = await models create(req.body);
-    res.status(201).json(req.body);
+    let userRecord = await users.create(req.body);
+    const output = {
+      user: userRecord,
+      token: userRecord.token,
+    };
+    res.status(201).json(output);
   } catch (e) {
     res.status(500).json(e);
   }
 });
-authRoutes.post("/sign-in", (req, res) => {
-  res.send("sign-in");
+
+authRoutes.post("/sign-in", basic, async (req, res) => {
   try {
-    //  const servers = await models create(req.body);
-    res.status(201).json(req.body);
+    const user = {
+      user: req.user,
+      token: req.user.token,
+    };
+    res.status(200).json(user);
   } catch (e) {
     res.status(500).json(e);
   }
 });
-/*
-authRoutes.post("/sign-in", basic, (req, res) => {
-  res.send("Sign Up");
-  try {
-    //  const servers = await models create(req.body);
-    res.status(201).json(req.body);
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});*/
+
+authRoutes.get("/users", bearer, async (req, res, next) => {
+  const userRecords = await users.findAll({});
+  const list = userRecords.map((user) => user.username);
+  res.status(200).json(list);
+});
 module.exports = authRoutes;

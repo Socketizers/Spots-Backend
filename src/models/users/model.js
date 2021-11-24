@@ -6,14 +6,18 @@ const jwt = require("jsonwebtoken");
 const SECRET = process.env.SECRET || "secretstring";
 
 //------------------------------------------------
-// Model Schema 
+// Model Schema
 //------------------------------------------------
 
 const userModel = (sequelize, DataTypes) => {
   const model = sequelize.define("Users", {
     username: { type: DataTypes.STRING, required: true, unique: true },
     fullName: { type: DataTypes.STRING, required: true },
-    image: { type: DataTypes.STRING, required: true },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue:
+        "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300",
+    },
     password: { type: DataTypes.STRING, required: true },
     role: {
       type: DataTypes.ENUM("user", "admin"),
@@ -42,20 +46,18 @@ const userModel = (sequelize, DataTypes) => {
     },
   });
 
-  
-//------------------------------------------------
-// Securing the password before create the user
-//------------------------------------------------
+  //------------------------------------------------
+  // Securing the password before create the user
+  //------------------------------------------------
 
   model.beforeCreate(async (user) => {
     let hashedPass = await bcrypt.hash(user.password, 10);
     user.password = hashedPass;
   });
 
-
-//------------------------------------------------
-// Basic Authentication of the user
-//------------------------------------------------
+  //------------------------------------------------
+  // Basic Authentication of the user
+  //------------------------------------------------
 
   model.authenticateBasic = async function (username, password) {
     const user = await this.findOne({ where: { username } });
@@ -66,9 +68,9 @@ const userModel = (sequelize, DataTypes) => {
     throw new Error("Invalid User");
   };
 
-//------------------------------------------------
-// Bearer Authentication of the user
-//------------------------------------------------
+  //------------------------------------------------
+  // Bearer Authentication of the user
+  //------------------------------------------------
 
   model.authenticateToken = async function (token) {
     try {

@@ -1,50 +1,53 @@
 const express = require("express");
 const serverRouts = express.Router();
-// const bearer = require("../middleware/auth/bearer");
+const Collection = require("../models/Collection");
+const { servers } = require("../models/index");
+
+const serversCollection = new Collection(servers);
+const bearer = require("../middleware/auth/bearer");
+
 // * V1
 
 serverRouts
   .route("/:id?")
-  .get(async (req, res) => {
+  .get(bearer, async (req, res) => {
     try {
-      //   const servers = await get(req.params.id);
-      res.status(200).send("Hello World " + req.params.id);
+      const allServers = await serversCollection.get(req.params.id);
+      res.status(200).send(allServers);
     } catch (error) {
       res.status(500).send(error);
     }
   })
-  .put(async (req, res) => {
+  .put(bearer, async (req, res) => {
     const serverInfoUpdated = req.body;
     try {
-      //   const servers = await update(req.params.id, serverInfoUpdated);
-      res.status(200).send(serverInfoUpdated);
+      const updatedServer = await serversCollection.update(
+        req.params.id,
+        serverInfoUpdated
+      );
+      res.status(200).send(updatedServer);
     } catch (error) {
       res.status(500).send(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(bearer, async (req, res) => {
     try {
-      //   const servers = await remove(req.params.id);
-      res.status(204).send(req.params.id);
+      const deleteServer = await serversCollection.delete(req.params.id);
+      res.status(200).send(deleteServer);
     } catch (error) {
       res.status(500).send(error);
     }
   });
 
-serverRouts.post("/", async (req, res) => {
+serverRouts.post("/", bearer, async (req, res) => {
   try {
     const serverInfo = req.body;
-    // * const servers = await models create(serverInfo);
-    res.status(201).json(serverInfo);
+    const newServer = await serversCollection.create(serverInfo);
+    res.status(201).json(newServer);
   } catch (error) {
-    res.status(500).send(error);
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 
-// TODO: V2
-/*
-serverRouts.get("/:id?", bearer, (req, res) => {
-  res.send("Hello World" + req.params.id);
-});
-*/
 module.exports = serverRouts;
