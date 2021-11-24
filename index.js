@@ -1,3 +1,8 @@
-require("dotenv").config();
+"use strict";
+
 const { start } = require("./src/server");
-start(process.env.PORT || 3000);
+const { db } = require("./src/models/index");
+
+db.sync().then(() => {
+  start();
+});
