@@ -25,8 +25,8 @@ app.get("/", (req, res) => {
 });
 
 // Routes using
-app.use("/server", serverRout);
-app.use("/room", roomRoutes);
+app.use(serverRout);
+app.use(roomRoutes);
 app.use(authRouts);
 
 // Error handlers

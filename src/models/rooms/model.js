@@ -9,7 +9,6 @@ const roomModel = (sequelize, DataTypes) =>
     name: {
       type: DataTypes.STRING,
       required: true,
-      unique: true,
       allowNull: false,
     },
     server_id: { type: DataTypes.INTEGER, required: true },

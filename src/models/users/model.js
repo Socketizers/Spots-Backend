@@ -18,6 +18,7 @@ const User = (sequelize, DataTypes) => {
         "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300",
     },
     password: { type: DataTypes.STRING, required: true },
+    subscribed: { type: DataTypes.INTEGER },
     role: {
       type: DataTypes.ENUM("user", "admin"),
       required: true,

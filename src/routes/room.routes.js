@@ -5,12 +5,13 @@ const roomRoutes = express.Router();
 
 const Collection = require("../models/Collection");
 
-const { rooms } = require("../models/index");
+const { rooms, servers } = require("../models/index");
+const bearer = require("../middleware/auth/bearer");
 
 const roomsCollection = new Collection(rooms);
 
 roomRoutes
-  .route("/:id?")
+  .route("/room/:id?")
   .get(async (req, res) => {
     try {
       let allRooms = await roomsCollection.get();
@@ -39,15 +40,41 @@ roomRoutes
     }
   });
 
-roomRoutes.post("/", async (req, res) => {
+// Create new room for the server
+roomRoutes.post("/room", async (req, res) => {
   try {
     let roomInfo = req.body;
     console.log(roomInfo);
     let room = await roomsCollection.create(roomInfo);
+    servers.findOne({ where: { id: roomInfo.server_id } }).then((record) => {
+      let roomNum;
+      !record.rooms_num ? (roomNum = 1) : (roomNum = record.rooms_num + 1);
+      record.update({ rooms_num: roomNum });
+    });
+
     res.status(201).json(room);
   } catch (error) {
     res.status(500).send(error);
   }
 });
+
+// Get Server Rooms
+roomRoutes.get("/rooms/server/:id", bearer, async (req, res) => {
+  try {
+    const ServerRooms = await rooms.findAll({
+      where: { server_id: req.params.id },
+    });
+    res.status(201).json(ServerRooms);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
+
+
+
+
+
 
 module.exports = roomRoutes;

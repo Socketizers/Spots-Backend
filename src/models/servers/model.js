@@ -12,7 +12,8 @@ const servers = (sequelize, DataTypes) =>
     user_id: { type: DataTypes.INTEGER, allowNull: false },
     image: { type: DataTypes.STRING, required: true },
     public: { type: DataTypes.BOOLEAN, required: true },
-    users: { type: DataTypes.ARRAY(DataTypes.STRING) },
+    rooms_num:{type: DataTypes.INTEGER},
+    users: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
   });
 
 module.exports = servers;
