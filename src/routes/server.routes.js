@@ -135,26 +135,28 @@ serverRouts.put("/disconnect/server/:id", bearer, async (req, res) => {
 serverRouts.get("/connected/server/:id", bearer, async (req, res) => {
   try {
     let serverId = req.params.id;
-    servers.findOne({ where: { id: serverId } }).then((record) => {
-      let usersList = record.users;
-      console.log(usersList);
-      let usersArr = [];
-      if (!record.users) {
-        res
-          .status(200)
-          .json({ message: "There are no users connected to this server" });
-      } else {
-        usersList.forEach((userId) => {
-          users.findOne({ where: { id: userId } }).then((user) => {
-            usersArr.push(user.dataValues);
-            console.log(usersArr);
-          });
-        });
-        setTimeout(() => {
-          res.status(201).send(usersArr);
-        }, 500);
-      }
-    });
+
+    const record = await servers.findOne({ where: { id: serverId } });
+    const usersList = record.users;
+
+    if (!record.users) {
+      res
+        .status(200)
+        .json({ message: "There are no users connected to this server" });
+    } else {
+      let usersArr = await Promise.all(
+        usersList.map(async (userId) => {
+          let user = await users.findOne({ where: { id: userId } });
+          return {
+            username: user.dataValues.username,
+            fullName: user.dataValues.fullName,
+            image: user.dataValues.image,
+          };
+        })
+      );
+
+      res.status(201).send(usersArr);
+    }
   } catch (error) {
     res.status(500).send(error);
   }

@@ -12,7 +12,7 @@ const roomModel = (sequelize, DataTypes) =>
       allowNull: false,
     },
     server_id: { type: DataTypes.INTEGER, required: true },
-    users: { type: DataTypes.ARRAY(DataTypes.STRING) },
+    users: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
     type: {
       type: DataTypes.ENUM("text", "voice", "podcast"),
       required: true,

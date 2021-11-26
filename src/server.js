@@ -12,6 +12,7 @@ const { createServer } = require("http");
 
 // Render the server
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 app.use(logger);
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
