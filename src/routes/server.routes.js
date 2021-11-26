@@ -135,7 +135,6 @@ serverRouts.put("/disconnect/server/:id", bearer, async (req, res) => {
 serverRouts.get("/connected/server/:id", bearer, async (req, res) => {
   try {
     let serverId = req.params.id;
-
     servers.findOne({ where: { id: serverId } }).then((record) => {
       let usersList = record.users;
       console.log(usersList);
@@ -154,8 +153,6 @@ serverRouts.get("/connected/server/:id", bearer, async (req, res) => {
         setTimeout(() => {
           res.status(201).send(usersArr);
         }, 500);
-
-        
       }
     });
   } catch (error) {
