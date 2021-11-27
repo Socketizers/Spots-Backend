@@ -6,7 +6,7 @@ const logger = require("./middleware/logger");
 const serverRout = require("./routes/server.routes");
 const authRouts = require("./routes/auth.routes");
 const roomRoutes = require("./routes/room.routes");
-
+const privateRoomRoutes = require("./routes/private-room.routes");
 const { createServer } = require("http");
 
 const cors = require("cors");
@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 app.use(serverRout);
 app.use(roomRoutes);
 app.use(authRouts);
+app.use(privateRoomRoutes);
 
 const server = createServer(app);
 const io = require("socket.io");
@@ -56,3 +57,4 @@ module.exports = {
 };
 require("./io/server.io");
 require("./io/videoRoom.io");
+require("./io/privateRoom.io");

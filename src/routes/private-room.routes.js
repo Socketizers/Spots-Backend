@@ -57,7 +57,7 @@ privateRoomRoutes.post("/private-room", async (req, res) => {
 });
 
 // get private rooms for the user
-privateRoomRoutes.get("user/private-room/:id", bearer, async (req, res) => {
+privateRoomRoutes.get("/user/private-room/:id", bearer, async (req, res) => {
   try {
     const userId = req.params.id;
 
@@ -72,7 +72,7 @@ privateRoomRoutes.get("user/private-room/:id", bearer, async (req, res) => {
   }
 });
 
-privateRoomRoutes.put("message/private-room/:id", async (req, res) => {
+privateRoomRoutes.put("/message/private-room/:id", async (req, res) => {
   const privateRoom = await privateRooms.findOne({
     where: { id: req.params.id },
   });
@@ -83,3 +83,4 @@ privateRoomRoutes.put("message/private-room/:id", async (req, res) => {
   await privateRoom.update({ message_history: null });
   await privateRoom.update({ message_history: messageHistory });
 });
+module.exports = privateRoomRoutes;
