@@ -2,23 +2,24 @@
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 const SECRET = process.env.SECRET || "secretstring";
 
 //------------------------------------------------
 // Model Schema
 //------------------------------------------------
 
-const userModel = (sequelize, DataTypes) => {
+const User = (sequelize, DataTypes) => {
   const model = sequelize.define("Users", {
     username: { type: DataTypes.STRING, required: true, unique: true },
     fullName: { type: DataTypes.STRING, required: true },
+    email: { type: DataTypes.STRING, required: true },
     image: {
       type: DataTypes.STRING,
       defaultValue:
         "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300",
     },
     password: { type: DataTypes.STRING, required: true },
+    subscribed: { type: DataTypes.ARRAY(DataTypes.INTEGER)},
     role: {
       type: DataTypes.ENUM("user", "admin"),
       required: true,
@@ -39,7 +40,7 @@ const userModel = (sequelize, DataTypes) => {
       get() {
         const acl = {
           admin: ["read", "create", "update", "delete"],
-          user: ["read-user", "create-user", "update-user", "delete-user"],
+          user: ["read"],
         };
         return acl[this.role];
       },
@@ -88,4 +89,4 @@ const userModel = (sequelize, DataTypes) => {
   return model;
 };
 
-module.exports = userModel;
+module.exports = User;

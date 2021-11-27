@@ -9,7 +9,11 @@ const { createServer } = require("http");
 
 const cors = require("cors");
 app.use(express.json());
+
+app.use('/uploads', express.static('uploads'));
+
 app.use(cors());
+
 app.use(logger);
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
@@ -21,7 +25,14 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
-app.use("/server", serverRout);
+
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
+// Routes using
+app.use(serverRout);
+app.use(roomRoutes);
 app.use(authRouts);
 
 const server = createServer(app);

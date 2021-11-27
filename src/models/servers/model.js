@@ -4,16 +4,16 @@
 // Model Schema
 //------------------------------------------------
 
-const serverModel = (sequelize, DataTypes) => {
-  return sequelize.define("Servers", {
+const servers = (sequelize, DataTypes) => 
+  sequelize.define("servers", {
     name: { type: DataTypes.STRING, required: true, unique: true },
     description: { type: DataTypes.STRING, required: true },
     category: { type: DataTypes.STRING, required: true },
     user_id: { type: DataTypes.INTEGER, allowNull: false },
     image: { type: DataTypes.STRING, required: true },
     public: { type: DataTypes.BOOLEAN, required: true },
-    users: { type: DataTypes.ARRAY(DataTypes.STRING) },
+    rooms_num:{type: DataTypes.INTEGER},
+    users: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
   });
-};
 
-module.exports = serverModel;
+module.exports = servers;
