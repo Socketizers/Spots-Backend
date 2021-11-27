@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     cb(null, "./uploads/users");
   },
   filename: function (req, file, cb) {
-    cb(null, req.body.username+'_'+ file.originalname);
+    cb(null, req.body.username + "_" + file.originalname);
   },
 });
 
@@ -44,6 +44,8 @@ authRoutes.post("/sign-up", upload.single("image"), async (req, res, next) => {
       image: req.file.path,
       password: req.body.password,
       role: req.body.role,
+      onlineStatus: true,
+      email: req.body.email,
     };
 
     let userRecord = await users.create(user);
@@ -53,6 +55,7 @@ authRoutes.post("/sign-up", upload.single("image"), async (req, res, next) => {
     };
     res.status(201).json(output);
   } catch (e) {
+    console.error(e);
     res.status(500).json(e);
   }
 });
@@ -63,6 +66,12 @@ authRoutes.post("/sign-in", basic, async (req, res) => {
       user: req.user,
       token: req.user.token,
     };
+
+    users.findOne({ where: { id: user.user.id } }).then((user) => {
+      user.update({
+        onlineStatus: true,
+      });
+    });
     res.status(200).json(user);
   } catch (e) {
     res.status(500).json(e);

@@ -19,7 +19,7 @@ const User = (sequelize, DataTypes) => {
         "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300",
     },
     password: { type: DataTypes.STRING, required: true },
-    subscribed: { type: DataTypes.ARRAY(DataTypes.INTEGER)},
+    subscribed: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
     role: {
       type: DataTypes.ENUM("user", "admin"),
       required: true,
@@ -43,6 +43,20 @@ const User = (sequelize, DataTypes) => {
           user: ["read"],
         };
         return acl[this.role];
+      },
+    },
+    onlineStatus: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    lastSeen: {
+      type: DataTypes.STRING,
+      get() {
+        if (this.onlineStatus) {
+          return "online";
+        } else {
+          return new Date().toISOString();
+        }
       },
     },
   });
