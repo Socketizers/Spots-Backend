@@ -8,6 +8,7 @@ const authRouts = require("./routes/auth.routes");
 const roomRoutes = require("./routes/room.routes");
 const privateRoomRoutes = require("./routes/private-room.routes");
 const { createServer } = require("http");
+const storyRouter = require("./routes/story.routes");
 
 const cors = require("cors");
 app.use(express.json());
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 // Routes using
 app.use(serverRout);
 app.use(roomRoutes);
+app.use("/story", storyRouter);
 app.use(authRouts);
 app.use(privateRoomRoutes);
 
