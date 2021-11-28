@@ -4,14 +4,13 @@ const { users, privateRooms } = require("../models/index");
 socketIo.on("connection", (client) => {
   client.on("join-private-room", async (userId, user2Id) => {
     const user2 = await users.findOne({ id: user2Id });
-
     if (user2.onlineStatus) {
-      client.join(userId + user2Id);
+      client.join(userId + "|" + user2Id);
       socketIo.emit(
         "join-privet-room-user2",
         userId,
         user2Id,
-        userId + user2Id
+        userId + "|" + user2Id
       );
     }
   });
@@ -29,6 +28,8 @@ socketIo.on("connection", (client) => {
     messageHistory.push(message);
     await ourRoom.update({ message_history: null });
     await ourRoom.update({ message_history: messageHistory });
-    client.broadcast.to(userId + user2Id).emit("new_private_message", message);
+    client.broadcast
+      .to(userId + "|" + user2Id)
+      .emit("new_private_message", userId, user2Id, message);
   });
 });
