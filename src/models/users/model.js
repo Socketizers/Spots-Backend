@@ -59,6 +59,10 @@ const User = (sequelize, DataTypes) => {
         }
       },
     },
+    friends: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue: null,
+    },
   });
 
   //------------------------------------------------

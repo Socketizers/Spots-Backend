@@ -5,7 +5,7 @@ const basic = require("../middleware/auth/basic");
 const bearer = require("../middleware/auth/bearer");
 const permissions = require("../middleware/auth/acl");
 const Collection = require("../models/Collection");
-const { users } = require("../models/index");
+const { users, friendRequest } = require("../models/index");
 const multer = require("multer");
 const fs = require("fs");
 
@@ -35,6 +35,7 @@ const upload = multer({
 });
 
 const usersCollection = new Collection(users);
+const friendRequestCollection = new Collection(friendRequest);
 
 authRoutes.post("/sign-up", upload.single("image"), async (req, res, next) => {
   try {
@@ -107,5 +108,58 @@ authRoutes.delete(
     }
   }
 );
+
+////// Friend requests
+
+authRoutes.post("/friends", async (req, res) => {
+  const request = {
+    user1_id: req.body.user1_id,
+    user2_id: req.body.user2_id,
+  };
+  const sendRequest = await friendRequestCollection.create(request);
+
+  res.status(201).json(sendRequest);
+});
+
+authRoutes.get("/friends/:id", async (req, res) => {
+  const friendRequests = await friendRequest.findAll({
+    where: { user1_id: req.params.id },
+  });
+  res.status(200).json(friendRequests);
+});
+
+authRoutes.put("/friends/:id", async (req, res) => {
+  const updatedRequest = await friendRequestCollection.update(req.params.id, {
+    pending: false,
+    response: req.body.response,
+  });
+
+  if (updatedRequest.response === "yes") {
+    /// updating user1 friend list
+    const user = await usersCollection.get(updatedRequest.user1_id);
+
+    let userFriends = user.friends || [];
+
+    userFriends.push(updatedRequest.user2_id);
+
+    await user.update({ friends: userFriends });
+
+    /// updating user2 friend list
+
+    const user2 = await usersCollection.get(updatedRequest.user2_id);
+
+    let user2Friends = user2.friends || [];
+
+    user2Friends.push(updatedRequest.user1_id);
+
+    await user2.update({ friends: user2Friends });
+  }
+  res.status(200).json(updatedRequest);
+});
+
+authRoutes.delete("/friends/:id", async (req, res) => {
+  const deletedRequest = await friendRequestCollection.delete(req.params.id);
+  res.status(204).json(deletedRequest);
+});
 
 module.exports = authRoutes;
