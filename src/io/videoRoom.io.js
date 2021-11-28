@@ -15,7 +15,7 @@ socketIo.on("connection", (socket) => {
     socket.broadcast.to(room).emit("new_user_joined", userInfo, peerId);
 
     /*
-    disconnect event is used emit user-disconnected event
+    disconnect event is used to emit user-disconnected event
      to close the video share at the receiver user immediately 
      when the socket is disconnected 
     */

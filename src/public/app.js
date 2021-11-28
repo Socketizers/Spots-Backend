@@ -4,18 +4,16 @@
 const socket = io();
 
 // ********* Create peer ************
-
 const myPeer = new Peer(undefined, {
   secure: true,
   host: "peertestjs.herokuapp.com",
   port: 443,
 });
 
+// this variable declared to be used when a socket is disconnected to cutoff the stream
 let peers = {};
 
-// console.log(myPeer);
-
-// ************************** Start of Messaging events *************************************
+// **************************🟩 Start of Messaging events 🟩*************************************
 
 let userName;
 const roomForm = document.querySelector("#room-form");
@@ -40,14 +38,14 @@ socket.on("new_message", (message, userName) => {
   document.querySelector("#messages").appendChild(messageElement);
 });
 
-// ************************** End of Messaging events *************************************
+// **************************🟥 End of Messaging events🟥 *************************************
 
-// ************************** Start of Video Share events *************************************
+// **************************🟩 Start of Video Share events 🟩*************************************
 
 let myStream;
 const videoRoomForm = document.getElementById("video-form");
 
-// ************* Start of event listener ***********
+// *************🟩 Start of event listener 🟩***********
 
 videoRoomForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -93,7 +91,7 @@ videoRoomForm.addEventListener("submit", async (e) => {
   socket.emit("join_video", userName, roomVideo, myPeer.id);
 });
 
-// ************* Start of event listener ***********
+// *************🟥 End of event listener 🟥 ***********
 
 /**
  * this function will display my stream and other user's stream on my web page
@@ -140,7 +138,6 @@ myPeer.on("call", (call) => {
   call.answer(myStream);
   const video = document.createElement("video");
   call.on("stream", (userVideoStream) => {
-    // console.log("stream");
     addVideoStream(video, userVideoStream);
   });
 });
@@ -150,7 +147,7 @@ socket.on("user-disconnected", (userId) => {
   if (peers[userId]) peers[userId].close();
 });
 
-// ************************** End of Video Share events *************************************
+// **************************🟥 End of Video Share events 🟥 *************************************
 
 // privet chat
 
