@@ -63,6 +63,16 @@ const User = (sequelize, DataTypes) => {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: null,
     },
+    story: {
+      type: DataTypes.JSONB,
+      defaultValue: null,
+      get() {
+        return JSON.parse(this.getDataValue("story"));
+      },
+      set(value) {
+        return this.setDataValue("story", JSON.stringify(value));
+      },
+    },
   });
 
   //------------------------------------------------
