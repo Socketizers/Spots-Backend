@@ -35,4 +35,16 @@ html(lang="en")
             input(type="text", name="name", placeholder="Name")
             input.field(type="text", name="roomVideo", placeholder="Video Room")
           button.ui.button(type="submit") Join
-        #local-video.ui.video.fluid
+      #local-video.ui.video.fluid
+
+        #pRoom.ui.grid mock a privet chat
+        form#pRoom-form.ui.form
+          .field     
+            input(type="text", name="user1", placeholder="my id")
+            input.field(type="text", name="user2", placeholder="Room")
+          button.ui.button(type="submit") Join 
+        form#pMessage-form.ui.form
+          .field
+            input(type="text", name="pMessage", placeholder="message")
+          button.ui.button(type="submit") p Message 
+        #pMessages.ui

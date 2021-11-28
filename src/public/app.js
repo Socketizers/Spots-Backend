@@ -6,12 +6,13 @@ const myPeer = new Peer(undefined, {
 const socket = io();
 
 let peers = {};
-const roomForm = document.querySelector("#room-form");
+
 let userName;
 let myStream;
 console.log(myPeer);
+const roomForm = document.querySelector("#room-form");
 const roomMessage = document.querySelector("#message-form");
-socket.connect;
+
 roomForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const roomName = e.target.room.value;
@@ -102,3 +103,41 @@ function connectToNewUser(userId, stream) {
   });
   peers[userId] = call;
 }
+
+// privet chat
+
+const pRoomForm = document.querySelector("#pRoom-form");
+const pMessage = document.querySelector("#pMessage-form");
+let myId;
+let idUser2;
+
+pRoomForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  myId = e.target.user1.value;
+  if (e.target.user2.value) {
+    idUser2 = e.target.user2.value;
+    socket.emit("join-private-room", myId, idUser2);
+  }
+});
+const private = {};
+socket.on("join-privet-room-user2", (userId, user2, roomName) => {
+  if (myId === user2) {
+    idUser2 = userId;
+    private[userId] = roomName;
+    socket.emit("join-privet-room-user2", roomName);
+  }
+});
+
+pMessage.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const message = e.target.pMessage.value;
+  console.log(myId, idUser2, message);
+  const [a, b] = private[idUser2]?.split("|") ?? [myId, idUser2];
+  socket.emit("new_private_message", a, b, message);
+});
+
+socket.on("new_private_message", (message, user1, user2) => {
+  const messageElement = document.createElement("div");
+  messageElement.innerText = `${user2}: ${message}`;
+  document.querySelector("#messages").appendChild(messageElement);
+});
