@@ -2,29 +2,36 @@ const express = require("express");
 const serverRouts = express.Router();
 const Collection = require("../models/Collection");
 const { servers, users } = require("../models/index");
-
 const serversCollection = new Collection(servers);
 const bearer = require("../middleware/auth/bearer");
+
 const multer = require("multer");
 const fs = require("fs");
 
+// using disk storage engine gives the full control on storing files to disk.
 const storage = multer.diskStorage({
+  // destination is used to determine within which folder the uploaded files should be stored
   destination: function (req, file, cb) {
     cb(null, "./uploads/servers");
   },
+  // filename is used to determine what the file should be named inside the folder
   filename: function (req, file, cb) {
     cb(null, req.body.name + "_" + file.originalname);
   },
 });
 
+// using fileFilter function to control which files should be uploaded and which should be skipped
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    // To accept the file pass `true`
     cb(null, true);
   } else {
+    // To reject the file pass `false`
     cb(null, false);
   }
 };
 
+// creating a middle ware that will check of images and upload them
 const upload = multer({
   storage: storage,
   limits: {
@@ -33,7 +40,7 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-// * V1
+// ********************************** Get, Put, and Delete requests for servers table *****************
 
 serverRouts
   .route("/server/:id")
@@ -75,27 +82,42 @@ serverRouts
     }
   });
 
-// Create New Server
-serverRouts.post("/user/server", bearer,upload.single("image"), async (req, res) => {
-  try {
-    const serverInfo = {
-      name: req.body.name,
-      description: req.body.description,
-      category: req.body.category,
-      image: req.file.path,
-      user_id: req.user.id,
-      public: true,
-    };
+// ***************************** Create New Server ****************************
+serverRouts.post(
+  "/user/server",
+  bearer,
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      // check if the user didn't upload an image set the default one
+      const serverInfo = req.file
+        ? {
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            image: req.file.path,
+            user_id: req.user.id,
+            public: true,
+          }
+        : {
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            user_id: req.user.id,
+            public: true,
+          };
 
-    const newServer = await serversCollection.create(serverInfo);
-    res.status(201).json(newServer);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+      const newServer = await serversCollection.create(serverInfo);
+      res.status(201).json(newServer);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
   }
-});
+);
 
-// Get User Servers
+// **************************** Get User Servers ***************************
+
 serverRouts.get("/user/servers", bearer, async (req, res) => {
   try {
     const UserServers = await servers.findAll({
@@ -108,7 +130,8 @@ serverRouts.get("/user/servers", bearer, async (req, res) => {
   }
 });
 
-//Get Server based on their cateogory
+// **************************** Get Server based on their category ************************
+
 serverRouts.get("/servers", bearer, async (req, res) => {
   try {
     const UserServers = await servers.findAll({
@@ -121,13 +144,14 @@ serverRouts.get("/servers", bearer, async (req, res) => {
   }
 });
 
-// Join a server
+// **************************** Join a server ***************************************
+
 serverRouts.put("/connect/server/:id", bearer, async (req, res) => {
   try {
     let userId = req.user.id;
     let serverId = req.params.id;
 
-    // updating server users list 
+    // updating server users list
     servers.findOne({ where: { id: serverId } }).then((record) => {
       let usersList = record.users;
       if (!record.users) {
@@ -146,14 +170,14 @@ serverRouts.put("/connect/server/:id", bearer, async (req, res) => {
       }
     });
 
-    // Updating user subscirbed list
+    // ******************************  Updating user subscribed list ***********************
+
     users.findOne({ where: { id: userId } }).then((record) => {
       console.log(record.subscribed);
       let subscribedList = record.subscribed;
       if (!record.subscribed) {
         subscribedList = [serverId];
         record.update({ subscribed: subscribedList });
-  
       } else if (subscribedList.includes(serverId)) {
         res
           .status(201)
@@ -162,20 +186,15 @@ serverRouts.put("/connect/server/:id", bearer, async (req, res) => {
         subscribedList.push(serverId);
         record.update({ subscribed: null });
         record.update({ subscribed: subscribedList });
-    
       }
     });
-
-
-
-
-
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// Leave  server
+// ********************************** Leave  server *********************************
+
 serverRouts.put("/disconnect/server/:id", bearer, async (req, res) => {
   try {
     let userId = req.user.id;
@@ -200,7 +219,8 @@ serverRouts.put("/disconnect/server/:id", bearer, async (req, res) => {
   }
 });
 
-//Get the users connected to the server
+// **************************** Get the users connected to the server ********************************
+
 serverRouts.get("/connected/server/:id", bearer, async (req, res) => {
   try {
     let serverId = req.params.id;

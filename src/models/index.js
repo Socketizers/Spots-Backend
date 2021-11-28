@@ -22,14 +22,16 @@ const roomsModel = require("./rooms/model");
 const privateRoomsModel = require("./private-rooms/model");
 const friendRequestModel = require("./friend-request/model");
 
-// tables
+// tables instantiating
 const usersTable = usersModel(sequelize, DataTypes);
 const serversTable = serversModel(sequelize, DataTypes);
 const roomsTable = roomsModel(sequelize, DataTypes);
 const privateRoomsTable = privateRoomsModel(sequelize, DataTypes);
 const friendRequestTable = friendRequestModel(sequelize, DataTypes);
 
-// Tables Relations
+//******************************************************************************** */
+
+// Creating Tables Relations
 
 // Users - Servers;
 usersTable.hasMany(serversTable, { foreignKey: "user_id", sourceKey: "id" });
@@ -63,6 +65,8 @@ privateRoomsTable.belongsTo(usersTable, {
   foreignKey: "user2_id",
   targetKey: "id",
 });
+
+//******************************************************************************** */
 
 module.exports = {
   db: sequelize,

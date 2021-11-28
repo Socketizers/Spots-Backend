@@ -12,7 +12,6 @@ const { users } = require("../../models/index");
  * @description Basic Auth Middleware for Express Router Middleware
  */
 
-
 module.exports = async (req, res, next) => {
   if (!req.headers.authorization) {
     return _authError();
@@ -20,10 +19,15 @@ module.exports = async (req, res, next) => {
   req.headers.authorization = req.headers.authorization.split(" ").pop();
   let basic = req.headers.authorization;
   let [username, pass] = base64.decode(basic).split(":");
+
   try {
     req.user = await users.authenticateBasic(username, pass);
     next();
   } catch (e) {
+    _authError();
+  }
+
+  function _authError() {
     res.status(403).send("Invalid Login");
   }
 };
