@@ -9,7 +9,7 @@ html(lang="en")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css")
     script(defer, src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js") 
     script(defer, src="/socket.io/socket.io.js") 
-    script(defer, src="../public/app.js") 
+    script(defer,type="module", src="../public/app.js") 
   body
     .ui.sizer.vertical.segment
       header.ui.huge.header
@@ -35,4 +35,19 @@ html(lang="en")
             input(type="text", name="name", placeholder="Name")
             input.field(type="text", name="roomVideo", placeholder="Video Room")
           button.ui.button(type="submit") Join
-        #local-video.ui.video.fluid
+      #local-video.ui.video.fluid
+
+        #pRoom.ui.grid mock a privet chat
+        form#pRoom-form.ui.form
+          .field     
+            input(type="text", name="user1", placeholder="my id")
+            input.field(type="text", name="user2", placeholder="Room")
+          button.ui.button(type="submit") Join 
+        form#pMessage-form.ui.form
+          .field
+            input(type="text", name="pMessage", placeholder="message")
+          button.ui.button(type="submit") p Message 
+        #pMessages.ui
+        input#testFile(type="file")
+        button#upload.ui.button upload
+        button#delete.ui.button delete

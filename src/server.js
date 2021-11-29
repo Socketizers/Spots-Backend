@@ -6,12 +6,15 @@ const logger = require("./middleware/logger");
 const serverRout = require("./routes/server.routes");
 const roomRoutes = require("./routes/room.routes");
 const authRouts = require("./routes/auth.routes");
+const roomRoutes = require("./routes/room.routes");
+const privateRoomRoutes = require("./routes/private-room.routes");
 const { createServer } = require("http");
+const storyRouter = require("./routes/story.routes");
 
 const cors = require("cors");
 app.use(express.json());
 
-app.use('/uploads', express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
 
 app.use(cors());
 
@@ -26,7 +29,6 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
-
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
@@ -34,7 +36,9 @@ app.get("/", (req, res) => {
 // Routes using
 app.use(serverRout);
 app.use(roomRoutes);
+app.use("/story", storyRouter);
 app.use(authRouts);
+app.use(privateRoomRoutes);
 
 const server = createServer(app);
 const io = require("socket.io");
@@ -56,3 +60,4 @@ module.exports = {
 };
 require("./io/server.io");
 require("./io/videoRoom.io");
+require("./io/privateRoom.io");

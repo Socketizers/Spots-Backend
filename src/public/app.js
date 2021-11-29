@@ -6,12 +6,13 @@ const myPeer = new Peer(undefined, {
 const socket = io();
 
 let peers = {};
-const roomForm = document.querySelector("#room-form");
+
 let userName;
 let myStream;
 console.log(myPeer);
+const roomForm = document.querySelector("#room-form");
 const roomMessage = document.querySelector("#message-form");
-socket.connect;
+
 roomForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const roomName = e.target.room.value;
@@ -102,3 +103,103 @@ function connectToNewUser(userId, stream) {
   });
   peers[userId] = call;
 }
+
+// privet chat
+
+const pRoomForm = document.querySelector("#pRoom-form");
+const pMessage = document.querySelector("#pMessage-form");
+let myId;
+let idUser2;
+
+pRoomForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  myId = e.target.user1.value;
+  if (e.target.user2.value) {
+    idUser2 = e.target.user2.value;
+    socket.emit("join-private-room", myId, idUser2);
+  }
+});
+const privateMsg = {};
+socket.on("join-privet-room-user2", (userId, user2, roomName) => {
+  if (myId === user2) {
+    idUser2 = userId;
+    privateMsg[userId] = roomName;
+    socket.emit("join-privet-room-user2", roomName);
+  }
+});
+
+pMessage.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const message = e.target.pMessage.value;
+  console.log(myId, idUser2, message);
+  const [a, b] = privateMsg[idUser2]?.split("|") ?? [myId, idUser2];
+  socket.emit("new_private_message", a, b, message);
+});
+
+socket.on("new_private_message", (message, user1, user2) => {
+  const messageElement = document.createElement("div");
+  messageElement.innerText = `${user2}: ${message}`;
+  document.querySelector("#messages").appendChild(messageElement);
+});
+
+// firebase
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+// import storage from "https://www.gstatic.com/firebasejs/9.5.0/firebase-storage.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "https://www.gstatic.com/firebasejs/9.5.0/firebase-storage.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const storage = getStorage(app);
+console.log(storage);
+
+function uploadImage(file) {
+  const myRef = ref(storage, "image");
+  const name = +new Date() + "-" + file.name;
+  file = file.files[0];
+
+  const metadata = {
+    contentType: file.type,
+  };
+
+  uploadBytes(myRef, file, metadata)
+    .then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        console.log("File available at", downloadURL);
+      });
+    })
+    .catch(console.error);
+}
+
+const myFile = document.getElementById("testFile");
+
+const uploadFile = document.getElementById("upload");
+uploadFile.addEventListener("click", (e) => {
+  uploadImage(myFile);
+});
+const deleteFile = document.getElementById("delete");
+deleteFile.addEventListener("click", (e) => {
+  const myRef = ref(storage, "image");
+  // Delete the file
+  deleteObject(myRef)
+    .then(() => {
+      // File deleted successfully
+      console.log("File deleted successfully");
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred
+      console.log(error);
+    });
+});

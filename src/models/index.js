@@ -20,12 +20,14 @@ const usersModel = require("./users/model");
 const serversModel = require("./servers/model");
 const roomsModel = require("./rooms/model");
 const privateRoomsModel = require("./private-rooms/model");
+const friendRequestModel = require("./friend-request/model");
 
 // tables
 const usersTable = usersModel(sequelize, DataTypes);
 const serversTable = serversModel(sequelize, DataTypes);
 const roomsTable = roomsModel(sequelize, DataTypes);
 const privateRoomsTable = privateRoomsModel(sequelize, DataTypes);
+const friendRequestTable = friendRequestModel(sequelize, DataTypes);
 
 // Tables Relations
 
@@ -68,4 +70,5 @@ module.exports = {
   servers: serversTable,
   rooms: roomsTable,
   privateRooms: privateRoomsTable,
+  friendRequest: friendRequestTable,
 };
