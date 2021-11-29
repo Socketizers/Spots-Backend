@@ -59,7 +59,7 @@ roomRoutes.post("/room", async (req, res) => {
 });
 
 // Get Server Rooms
-roomRoutes.get("/rooms/server/:id", bearer, async (req, res) => {
+roomRoutes.get("/rooms/server/:id", async (req, res) => {
   try {
     const ServerRooms = await rooms.findAll({
       where: { server_id: req.params.id },

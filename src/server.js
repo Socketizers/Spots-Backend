@@ -28,6 +28,18 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
+app.get("/demo", (req, res) => {
+  res.sendFile(__dirname +"/video.html");
+});
+app.get("/private-room", (req, res) => {
+  res.sendFile(__dirname +"/proom.html");
+});
+
+app.get("/chat", (req, res) => {
+  res.sendFile(__dirname +"/chat.html");
+});
+
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });

@@ -46,6 +46,7 @@ privateRoomRoutes
 
 //Create private room for two users
 privateRoomRoutes.post("/private-room", async (req, res) => {
+
   try {
     const privateRoomInfo = req.body;
     const privateRoom = await privateRoomsCollection.create(privateRoomInfo);
@@ -54,6 +55,7 @@ privateRoomRoutes.post("/private-room", async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+
 });
 
 // get private rooms for the user

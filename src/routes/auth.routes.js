@@ -79,6 +79,18 @@ authRoutes.post("/sign-in", basic, async (req, res) => {
   }
 });
 
+// Sign Out Route (editing online status for a user to edit last seen property)
+
+authRoutes.post("/sign-out",bearer, async(req, res) => {
+  try{
+    const user = await users.findOne({where: {id: req.user.id}});
+
+    await user.update({onlineStatus: false})
+  }catch(e){
+    res.status(500).json(e);
+  }
+})
+
 authRoutes.get("/users", bearer, async (req, res, next) => {
   const userRecords = await users.findAll({});
   const list = userRecords.map((user) => user);

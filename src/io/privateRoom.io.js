@@ -21,9 +21,15 @@ socketIo.on("connection", (client) => {
 
   client.on("new_private_message", async (userId, user2Id, message) => {
     console.log(`userId, user2Id, message`, userId, user2Id, message);
-    const ourRoom = await privateRooms.findOne({
+
+    let ourRoom = await privateRooms.findOne({
       where: { user1_id: userId, user2_id: user2Id },
     });
+    if (!ourRoom) ourRoom = await privateRooms.create({
+      user1_id: userId,
+      user2_id: user2Id,
+    });
+    console.log(`ourRoom`, ourRoom);
     const messageHistory = ourRoom.message_history || [];
     messageHistory.push(message);
     await ourRoom.update({ message_history: null });
