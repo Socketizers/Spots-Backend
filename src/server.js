@@ -14,6 +14,7 @@ const privateRoomRoutes = require("./routes/private-room.routes");
 /*importing  createServer function from http module 
 to connect socket io with this server*/
 const { createServer } = require("http");
+const storyRouter = require("./routes/story.routes");
 
 const cors = require("cors");
 
@@ -41,6 +42,7 @@ app.get("/", (req, res) => {
 // Routes using
 app.use(serverRout);
 app.use(roomRoutes);
+app.use("/story", storyRouter);
 app.use(authRouts);
 app.use(privateRoomRoutes);
 
