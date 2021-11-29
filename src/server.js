@@ -6,7 +6,6 @@ const logger = require("./middleware/logger");
 const serverRout = require("./routes/server.routes");
 const roomRoutes = require("./routes/room.routes");
 const authRouts = require("./routes/auth.routes");
-const roomRoutes = require("./routes/room.routes");
 const privateRoomRoutes = require("./routes/private-room.routes");
 const { createServer } = require("http");
 const storyRouter = require("./routes/story.routes");
