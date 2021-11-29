@@ -4,6 +4,7 @@ const notFound = require("./error-handlers/404");
 const errorHandler = require("./error-handlers/500");
 const logger = require("./middleware/logger");
 const serverRout = require("./routes/server.routes");
+const roomRoutes = require("./routes/room.routes");
 const authRouts = require("./routes/auth.routes");
 const { createServer } = require("http");
 
