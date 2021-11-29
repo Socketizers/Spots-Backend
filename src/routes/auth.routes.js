@@ -6,26 +6,34 @@ const bearer = require("../middleware/auth/bearer");
 const permissions = require("../middleware/auth/acl");
 const Collection = require("../models/Collection");
 const { users, friendRequest } = require("../models/index");
+
 const multer = require("multer");
 const fs = require("fs");
 
+// using disk storage engine gives the full control on storing files to disk.
 const storage = multer.diskStorage({
+  // destination is used to determine within which folder the uploaded files should be stored
   destination: function (req, file, cb) {
     cb(null, "./uploads/users");
   },
+  // filename is used to determine what the file should be named inside the folder
   filename: function (req, file, cb) {
     cb(null, req.body.username + "_" + file.originalname);
   },
 });
 
+// using fileFilter function to control which files should be uploaded and which should be skipped
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    // To accept the file pass `true`
     cb(null, true);
   } else {
+    // To reject the file pass `false`
     cb(null, false);
   }
 };
 
+// creating a middle ware that will check of images and upload them
 const upload = multer({
   storage: storage,
   limits: {
@@ -37,17 +45,29 @@ const upload = multer({
 const usersCollection = new Collection(users);
 const friendRequestCollection = new Collection(friendRequest);
 
+// ******************************************* Sign up ***************************************************
+
 authRoutes.post("/sign-up", upload.single("image"), async (req, res, next) => {
   try {
-    const user = {
-      username: req.body.username,
-      fullName: req.body.fullName,
-      image: req.file.path,
-      password: req.body.password,
-      role: req.body.role,
-      onlineStatus: true,
-      email: req.body.email,
-    };
+    // check if the user didn't upload an image set the default one
+    const user = req.file
+      ? {
+          username: req.body.username,
+          fullName: req.body.fullName,
+          image: req.file.path,
+          password: req.body.password,
+          role: req.body.role,
+          onlineStatus: true,
+          email: req.body.email,
+        }
+      : {
+          username: req.body.username,
+          fullName: req.body.fullName,
+          password: req.body.password,
+          role: req.body.role,
+          onlineStatus: true,
+          email: req.body.email,
+        };
 
     let userRecord = await users.create(user);
     const output = {
@@ -60,6 +80,8 @@ authRoutes.post("/sign-up", upload.single("image"), async (req, res, next) => {
     res.status(500).json(e);
   }
 });
+
+// ******************************************* Sign in ***************************************************
 
 authRoutes.post("/sign-in", basic, async (req, res) => {
   try {
@@ -79,11 +101,20 @@ authRoutes.post("/sign-in", basic, async (req, res) => {
   }
 });
 
-authRoutes.get("/users", bearer, async (req, res, next) => {
-  const userRecords = await users.findAll({});
-  const list = userRecords.map((user) => user);
-  res.status(200).json(list);
-});
+// ******************************************* Get all users (for the admin only) ***********************
+
+authRoutes.get(
+  "/users",
+  bearer,
+  permissions("delete"),
+  async (req, res, next) => {
+    const userRecords = await users.findAll({});
+    const list = userRecords.map((user) => user);
+    res.status(200).json(list);
+  }
+);
+
+// ******************************************* Delete user (for the admin only) ***********************
 
 authRoutes.delete(
   "/user/:id",
@@ -92,16 +123,19 @@ authRoutes.delete(
   async (req, res) => {
     try {
       const user = await usersCollection.get(req.params.id);
-      console.log(user);
+      // console.log(user);
       const path = user.dataValues.image;
 
+      // deleting user image from uploads folder
       fs.unlink(path, (err) => {
         if (err) {
           console.error(err);
           return;
         }
       });
+
       const deleteUser = await usersCollection.delete(req.params.id);
+
       res.sendStatus(200).send(deleteUser);
     } catch (error) {
       res.status(500).send(error);
@@ -109,7 +143,9 @@ authRoutes.delete(
   }
 );
 
-////// Friend requests
+// ***************************************** Friend Requests Operations ***********************************
+
+// ********************* Post request (will be called when user wants to add another user) ****************
 
 authRoutes.post("/friends", async (req, res) => {
   const request = {
@@ -121,6 +157,8 @@ authRoutes.post("/friends", async (req, res) => {
   res.status(201).json(sendRequest);
 });
 
+// ********************* Get request (will be called to list the pending requests fo a user) ****************
+
 authRoutes.get("/friends/:id", async (req, res) => {
   const friendRequests = await friendRequest.findAll({
     where: { user1_id: req.params.id },
@@ -128,11 +166,15 @@ authRoutes.get("/friends/:id", async (req, res) => {
   res.status(200).json(friendRequests);
 });
 
+// ********************* Put request (will be called when a user respond to a request from another user) ****************
+
 authRoutes.put("/friends/:id", async (req, res) => {
   const updatedRequest = await friendRequestCollection.update(req.params.id, {
     pending: false,
     response: req.body.response,
   });
+
+  // check the user response if it yes update the user friends information (table)
 
   if (updatedRequest.response === "yes") {
     /// updating user1 friend list
@@ -154,8 +196,11 @@ authRoutes.put("/friends/:id", async (req, res) => {
 
     await user2.update({ friends: user2Friends });
   }
+
   res.status(200).json(updatedRequest);
 });
+
+// ********************* Delete request (to delete the request from friends table) ****************
 
 authRoutes.delete("/friends/:id", async (req, res) => {
   const deletedRequest = await friendRequestCollection.delete(req.params.id);

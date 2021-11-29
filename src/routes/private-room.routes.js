@@ -5,17 +5,19 @@ const privateRoomRoutes = express.Router();
 
 const Collection = require("../models/Collection");
 
-const { privateRooms, users } = require("../models/index");
+const { privateRooms } = require("../models/index");
 
 const bearer = require("../middleware/auth/bearer");
 
 const privateRoomsCollection = new Collection(privateRooms);
 
+// ********************************** Get, Put, and Delete requests for private rooms table *****************
+
 privateRoomRoutes
   .route("/private-room/:id?")
   .get(async (req, res) => {
     try {
-      let allPrivateRooms = await privateRoomsCollection.get();
+      const allPrivateRooms = await privateRoomsCollection.get();
       res.status(200).json(allPrivateRooms);
     } catch (error) {
       res.status(500).send(error);
@@ -23,10 +25,10 @@ privateRoomRoutes
   })
   .put(async (req, res) => {
     try {
-      let id = req.params.id;
-      let updatePrivateRoomInfo = req.body;
-      let updatedPrivateRoom = await privateRoomsCollection.update(
-        id,
+      const roomId = req.params.id;
+      const updatePrivateRoomInfo = req.body;
+      const updatedPrivateRoom = await privateRoomsCollection.update(
+        roomId,
         updatePrivateRoomInfo
       );
       res.status(200).json(updatedPrivateRoom);
@@ -36,15 +38,16 @@ privateRoomRoutes
   })
   .delete(async (req, res) => {
     try {
-      let id = req.params.id;
-      let deletedPrivateRoom = await privateRoomsCollection.delete(id);
+      const roomId = req.params.id;
+      const deletedPrivateRoom = await privateRoomsCollection.delete(roomId);
       res.status(204).json(deletedPrivateRoom);
     } catch (error) {
       res.status(500).send(error);
     }
   });
 
-//Create private room for two users
+// *********************************** Create private room for two users *******************************
+
 privateRoomRoutes.post("/private-room", async (req, res) => {
   try {
     const privateRoomInfo = req.body;
@@ -56,7 +59,8 @@ privateRoomRoutes.post("/private-room", async (req, res) => {
   }
 });
 
-// get private rooms for the user
+// *********************************** get private rooms for the user *******************************
+
 privateRoomRoutes.get("/user/private-room/:id", bearer, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -72,6 +76,8 @@ privateRoomRoutes.get("/user/private-room/:id", bearer, async (req, res) => {
   }
 });
 
+// *********************************** Updating message history for a private room *******************************
+
 privateRoomRoutes.put("/message/private-room/:id", async (req, res) => {
   const privateRoom = await privateRooms.findOne({
     where: { id: req.params.id },
@@ -83,4 +89,5 @@ privateRoomRoutes.put("/message/private-room/:id", async (req, res) => {
   await privateRoom.update({ message_history: null });
   await privateRoom.update({ message_history: messageHistory });
 });
+
 module.exports = privateRoomRoutes;

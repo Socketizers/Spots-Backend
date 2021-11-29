@@ -10,21 +10,44 @@ const SECRET = process.env.SECRET || "secretstring";
 
 const User = (sequelize, DataTypes) => {
   const model = sequelize.define("Users", {
-    username: { type: DataTypes.STRING, required: true, unique: true },
-    fullName: { type: DataTypes.STRING, required: true },
-    email: { type: DataTypes.STRING, required: true },
+    // *************************************** username *************
+    username: {
+      type: DataTypes.STRING,
+      required: true,
+      unique: true,
+    },
+    // *************************************** fullName *************
+    fullName: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    // *************************************** email *************
+    email: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    // *************************************** image *************
     image: {
       type: DataTypes.STRING,
       defaultValue:
         "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300",
     },
-    password: { type: DataTypes.STRING, required: true },
-    subscribed: { type: DataTypes.ARRAY(DataTypes.INTEGER) },
+    // *************************************** password *************
+    password: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    // *************************************** subscribed *************
+    subscribed: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+    },
+    // *************************************** role *************
     role: {
       type: DataTypes.ENUM("user", "admin"),
       required: true,
       defaultValue: "user",
     },
+    // *************************************** token *************
     token: {
       type: DataTypes.VIRTUAL,
       get() {
@@ -35,6 +58,7 @@ const User = (sequelize, DataTypes) => {
         return token;
       },
     },
+    // *************************************** capabilities *************
     capabilities: {
       type: DataTypes.VIRTUAL,
       get() {
@@ -45,10 +69,12 @@ const User = (sequelize, DataTypes) => {
         return acl[this.role];
       },
     },
+    // *************************************** onlineStatus *************
     onlineStatus: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    // *************************************** lastSeen *************
     lastSeen: {
       type: DataTypes.STRING,
       get() {
@@ -59,6 +85,7 @@ const User = (sequelize, DataTypes) => {
         }
       },
     },
+    // *************************************** friends *************
     friends: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: null,
@@ -76,7 +103,7 @@ const User = (sequelize, DataTypes) => {
   });
 
   //------------------------------------------------
-  // Securing the password before create the user
+  // Securing (hashing) the password before create the user
   //------------------------------------------------
 
   model.beforeCreate(async (user) => {
