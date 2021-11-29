@@ -43,7 +43,7 @@ const upload = multer({
 // ********************************** Get, Put, and Delete requests for servers table *****************
 
 serverRouts
-  .route("/server/:id")
+  .route("/server/:id?")
   .get(bearer, async (req, res) => {
     try {
       const allServers = await serversCollection.get(req.params.id);
@@ -67,18 +67,25 @@ serverRouts
   .delete(bearer, async (req, res) => {
     try {
       const server = await serversCollection.get(req.params.id);
-      console.log(server);
+      // console.log(server);
       const path = server.dataValues.image;
-      fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-      });
+
+      if (
+        path !==
+        "https://img.favpng.com/12/19/14/discord-internet-bot-user-avatar-computer-servers-png-favpng-pMhCmZvgHpA9cT20mtKY40a0t.jpg"
+      ) {
+        fs.unlink(path, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        });
+      }
       const deleteServer = await serversCollection.delete(req.params.id);
-      res.sendStatus(200).send(deleteServer);
+      res.sendStatus(204);
     } catch (error) {
-      res.status(500).send(error);
+      console.log(error);
+      res.status(500).json({ ...error.message });
     }
   });
 

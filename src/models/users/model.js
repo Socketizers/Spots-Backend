@@ -38,9 +38,9 @@ const User = (sequelize, DataTypes) => {
       required: true,
     },
     // *************************************** subscribed *************
-    subscribed: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-    },
+    // subscribed: {
+    //   type: DataTypes.ARRAY(DataTypes.INTEGER),
+    // },
     // *************************************** role *************
     role: {
       type: DataTypes.ENUM("user", "admin"),
@@ -86,10 +86,10 @@ const User = (sequelize, DataTypes) => {
       },
     },
     // *************************************** friends *************
-    friends: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-      defaultValue: null,
-    },
+    // friends: {
+    //   type: DataTypes.ARRAY(DataTypes.INTEGER),
+    //   defaultValue: null,
+    // },
     story: {
       type: DataTypes.JSONB,
       defaultValue: null,

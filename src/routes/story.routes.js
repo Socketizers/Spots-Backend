@@ -18,15 +18,16 @@ storyRouter
   .put(bearer, async (req, res) => {
     try {
       let myStory = await userCol.get(req.user.id);
-      myStory = myStory.story;
+      console.log("myStory");
+      myStory = myStory.story || {};
       myStory[req.params.id] = req.body[req.params.id];
-      console.log("myStory", myStory);
+      // console.log("myStory", myStory);
 
       await userCol.update(req.user.id, {
         story: myStory,
       });
       storyTimeOut(req.user.id, req.params.id);
-      res.status(200).json(myStory);
+      res.status(201).json(myStory);
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: error.message });
@@ -54,6 +55,7 @@ function storyTimeOut(userId, storyId) {
       await userCol.update(userId, { story: myStory });
     } catch (error) {
       console.log(error);
+      res.status(500).json({ error, errorMessage: error.message });
     }
   }, 1000 * 60 * 60 * 24);
 }

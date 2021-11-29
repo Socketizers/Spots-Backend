@@ -14,37 +14,40 @@ const roomsCollection = new Collection(rooms);
 
 roomRoutes
   .route("/room/:id?")
-  .get(async (req, res) => {
+  .get(bearer, async (req, res) => {
     try {
       let allRooms = await roomsCollection.get();
       res.status(200).json(allRooms);
     } catch (error) {
+      console.log(error);
       res.status(500).send(error);
     }
   })
-  .put(async (req, res) => {
+  .put(bearer, async (req, res) => {
     try {
       const id = req.params.id;
       const updateRoomInfo = req.body;
       const updatedRoom = await roomsCollection.update(id, updateRoomInfo);
       res.status(200).json(updatedRoom);
     } catch (error) {
+      console.log("error", error.message);
       res.status(500).send(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(bearer, async (req, res) => {
     try {
       const id = req.params.id;
       const deletedRoom = await roomsCollection.delete(id);
       res.status(204).json(deletedRoom);
     } catch (error) {
+      console.log(error);
       res.status(500).send(error);
     }
   });
 
 // *********************************** Create new room for the server *****************************
 
-roomRoutes.post("/room", async (req, res) => {
+roomRoutes.post("/room", bearer, async (req, res) => {
   try {
     // create room
     const roomInfo = req.body;
@@ -60,7 +63,8 @@ roomRoutes.post("/room", async (req, res) => {
 
     res.status(201).json(room);
   } catch (error) {
-    res.status(500).send(error);
+    console.log(error);
+    res.status(500).json({ error });
   }
 });
 
@@ -100,6 +104,7 @@ roomRoutes.put("/connect/room/:id", bearer, async (req, res) => {
       }
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -124,6 +129,7 @@ roomRoutes.put("/disconnect/room/:id", bearer, async (req, res) => {
       }
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -157,6 +163,7 @@ roomRoutes.get("/connected/room/:id", bearer, async (req, res) => {
       res.status(201).send(usersArr);
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -186,6 +193,7 @@ roomRoutes.put("/message/room/:id", bearer, async (req, res) => {
       }
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -208,6 +216,7 @@ roomRoutes.get("/message/room/:id", bearer, async (req, res) => {
 
     res.status(201).send(messagesArr);
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });

@@ -10,9 +10,12 @@ const roomModel = (sequelize, DataTypes) =>
       type: DataTypes.INTEGER,
       required: true,
     },
-    users: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-    },
+    // users: {
+    //   type: DataTypes.ARRAY(DataTypes.INTEGER),
+    // },
+    // message_history: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    // },
     type: {
       type: DataTypes.ENUM("text", "voice", "podcast"),
       required: true,
@@ -25,9 +28,6 @@ const roomModel = (sequelize, DataTypes) =>
     capacity: {
       type: DataTypes.INTEGER,
       defaultValue: 25,
-    },
-    message_history: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
     },
   });
 

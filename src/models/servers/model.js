@@ -36,9 +36,9 @@ const servers = (sequelize, DataTypes) =>
     rooms_num: {
       type: DataTypes.INTEGER,
     },
-    users: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER),
-    },
+    // users: {
+    //   type: DataTypes.ARRAY(DataTypes.INTEGER),
+    // },
   });
 
 module.exports = servers;

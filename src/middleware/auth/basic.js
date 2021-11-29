@@ -24,13 +24,12 @@ module.exports = async (req, res, next) => {
     req.user = await users.authenticateBasic(username, pass);
     next();
   } catch (e) {
-
     _authError();
   }
 
   function _authError() {
+    console.log(e);
 
     res.status(403).send("Invalid Login " + e.message);
-
   }
 };

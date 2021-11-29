@@ -127,16 +127,21 @@ authRoutes.delete(
       const path = user.dataValues.image;
 
       // deleting user image from uploads folder
-      fs.unlink(path, (err) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-      });
+      if (
+        path !==
+        "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300"
+      ) {
+        fs.unlink(path, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        });
+      }
 
       const deleteUser = await usersCollection.delete(req.params.id);
 
-      res.sendStatus(200).send(deleteUser);
+      res.sendStatus(204);
     } catch (error) {
       res.status(500).send(error);
     }

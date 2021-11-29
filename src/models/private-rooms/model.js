@@ -19,12 +19,12 @@ const privateRoomModel = (sequelize, DataTypes) =>
       type: DataTypes.INTEGER,
       required: true,
     },
-    queues: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
-    message_history: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
+    // queues: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    // },
+    // message_history: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    // },
   });
 
 module.exports = privateRoomModel;
