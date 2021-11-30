@@ -9,11 +9,10 @@ const roomList = document.getElementById("room-list");
 let roomName;
 
 async function roomsList() {
-  const roomsRes = await fetch(`http://localhost:5000/rooms/server/1`);
-  // console.log(roomsRes);
+  const roomsRes = await fetch(
+    `https://socketizers.herokuapp.com/rooms/server/1`
+  );
   const allRooms = await roomsRes.json();
-  // console.log(allRooms);
-  roomList.innerHTML = "<h2>Server Name</h2>";
   allRooms.forEach((room) => {
     let roomElement = document.createElement("button");
     roomElement.value = room.id;
@@ -22,7 +21,7 @@ async function roomsList() {
     roomElement.addEventListener("click", () => {
       roomName = "class-" + room.id;
     });
-    roomList.appendChild(roomElement);
+    document.getElementById("roomsDiv").appendChild(roomElement);
   });
   let roomsNum = document.createElement("h3");
   roomsNum.textContent = allRooms.length;
@@ -31,7 +30,7 @@ async function roomsList() {
 
 roomsList();
 
-// ********************
+// **************************🟩 Start of Messaging events 🟩*************************************
 
 let userName;
 
@@ -42,10 +41,6 @@ const startChat = document.getElementById("start-chat");
 roomForm.addEventListener("submit", (e) => {
   e.preventDefault();
   userName = e.target.name.value;
-});
-
-startChat.addEventListener("click", (e) => {
-  e.preventDefault();
   const chatRoom = document.createElement("h2");
   chatRoom.innerText = `${roomName}`;
   chatRoom.setAttribute("id", "chatRoom");
@@ -57,7 +52,7 @@ roomMessage.addEventListener("submit", (e) => {
   e.preventDefault();
   const message = e.target.message.value;
   const messageElement = document.createElement("p");
-  messageElement.innerText = `<b>${userName}<b><br>${message}`;
+  messageElement.innerHTML = `<b>${userName}</b><br>${message}`;
   messageElement.setAttribute("class", "right-message");
   document.getElementById("messages-area").appendChild(messageElement);
   socket.emit("new_message", message, userName);
@@ -65,7 +60,9 @@ roomMessage.addEventListener("submit", (e) => {
 
 socket.on("new_message", (message, userName) => {
   const messageElement = document.createElement("p");
-  messageElement.innerText = `<b>${userName}<b><br>${message}`;
+  messageElement.innerHTML = `<b>${userName}</b><br>${message}`;
   messageElement.setAttribute("class", "left-message");
   document.getElementById("messages-area").appendChild(messageElement);
 });
+
+// **************************🟥 End of Messaging events🟥 *************************************

@@ -6,7 +6,7 @@ const socket = io();
 // ********* Create peer ************
 const myPeer = new Peer(undefined, {
   secure: true,
-  host: "peertestjs.herokuapp.com",
+  host: "spotspeer.herokuapp",
   port: 443,
 });
 
@@ -194,15 +194,6 @@ import {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDH-56W0ueuGyii9UXgzaFaCFgiUlLcPJ4",
-  authDomain: "spots-afdd1.firebaseapp.com",
-  projectId: "spots-afdd1",
-  storageBucket: "spots-afdd1.appspot.com",
-  messagingSenderId: "614756912879",
-  appId: "1:614756912879:web:f802ba5bc2a0e05a30d51a",
-  measurementId: "G-TPBNFZD0R1",
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
