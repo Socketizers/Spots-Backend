@@ -19,18 +19,14 @@ module.exports = async (req, res, next) => {
   req.headers.authorization = req.headers.authorization.split(" ").pop();
   let basic = req.headers.authorization;
   let [username, pass] = base64.decode(basic).split(":");
-
   try {
     req.user = await users.authenticateBasic(username, pass);
     next();
   } catch (e) {
-
-    _authError();
+    _authError(e);
   }
 
-  function _authError() {
-
+  function _authError(e) {
     res.status(403).send("Invalid Login " + e.message);
-
   }
 };

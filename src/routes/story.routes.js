@@ -6,10 +6,6 @@ const userCol = new Collection(users);
 const bearer = require("../middleware/auth/bearer");
 const { initializeApp } = require("firebase/app");
 const { getStorage, ref, deleteObject } = require("firebase/storage");
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
-const storesTimer = {};
-
 const firebaseConfig = {
   apiKey: process.env.apiKey,
   authDomain: process.env.authDomain,
@@ -19,6 +15,9 @@ const firebaseConfig = {
   appId: process.env.appId,
   measurementId: process.env.measurementId,
 };
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+const storesTimer = {};
 
 const deleteStoryFirebase = async (storyId) => {
   try {
@@ -79,7 +78,7 @@ function storyTimeOut(userId, storyId) {
       let myStory = await userCol.get(userId);
       myStory = myStory.story;
       delete myStory[storyId];
-      delete storesTimer[req.params.id];
+      delete storesTimer[storyId];
       await userCol.update(userId, { story: myStory });
       deleteStoryFirebase(storyId);
     } catch (error) {

@@ -1,86 +1,74 @@
 <!DOCTYPE html>
-  <html lang="en">
+<html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
-    <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
-    <script defer src="/socket.io/socket.io.js"></script>
-    <script defer src="public/proom.js"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+  <link rel="stylesheet" href="public/style.css">
+  <script defer src="/socket.io/socket.io.js"></script>
+  <script defer type="module" src="public/proom.js"></script>
+</head>
 
-  <body>
-    <div class="ui sizer vertical segment">
-      <header class="ui huge header">
-        <h1>spots</h1>
-      </header>
+<body>
+  <div class="ui sizer vertical segment">
+    <header>
+      <img src="/public/logo.png" alt="">
+    </header>
+  </div>
+  <main>
+    <div id="user-list" class="side-bar"></div>
+    <div class="ui two column container" id="formContainer">
+      <div class="ui placeholder segment">
+        <div class="ui one column very relaxed stackable grid">
+          <div class="column">
+            <div class="ui form">
+              <form id="sign-in">
+                <div class="field">
+                  <label>Username</label>
+                  <div class="ui left icon input">
+                    <input type="text" placeholder="Username" name="name">
+                    <i class="user icon"></i>
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Password</label>
+                  <div class="ui left icon input">
+                    <input type="password" name="password">
+                    <i class="lock icon"></i>
+                  </div>
+                </div>
+                <button type="submit" class="ui blue submit button">Login
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <main>
-      <div id="room-list" class="side-bar">
-        <button value=""></button>
-      </div>
-      <div class="ui grid" id="room">
-        
-        <!-- <form class="ui form" id="room-form"> -->
-          <!-- <div class="field">
-            <input type="text" name="name" placeholder="Name" /><input class="field" type="text" name="room"
-              placeholder="Room" />
-          </div>
-          <button class="ui button" type="submit">Join</button> -->
-        <!-- </form> -->
+    </div>
 
 
-        <!-- <form class="ui form" id="message-form"> -->
-          <!-- <div class="field">
-            <input type="text" name="message" placeholder="message" />
-          </div>
-          <button class="ui button" type="submit">message</button> -->
-        <!-- </form> -->
-
-<!-- 
-        <div class="ui" id="messages"></div>
-        <hr class="ui grid" id="room" />
-
-        <form class="ui form" id="video-form">
-          <div class="field">
-            <select class="ui dropdown" id="media" name="media">
-              <option value="screen">share screen</option>
-              <option value="camera">share camera</option>
-            </select><input type="text" name="name" placeholder="Name" /><input class="field" type="text"
-              name="roomVideo" placeholder="Video Room" />
-          </div>
-          <button class="ui button" type="submit">Join</button>
-        </form>
-      </div>
-      <div class="ui video fluid" id="local-video"> -->
+    </div>
+    </div>
+    </div>
+    <div class="chat-area"></div>
+    <div class="ui one column container" id="room">
+      <form class="ui form" id="pMessage-form">
+        <div class="field">
+          <input type="text" name="pMessage" placeholder="message" />
+        </div>
+        <button class="ui button" type="submit">p Message</button>
+      </form>
+      <div class="ui" id="pMessages"></div>
 
 
-        <div class="ui grid" id="pRoom">mock a private chat</div>
-        <form class="ui form" id="pRoom-form">
-          <div class="field">
-            <input type="text" name="user1" placeholder="my id" /><input class="field" type="text" name="user2"
-              placeholder="Room" />
-          </div>
-          <button class="ui button" type="submit">Join</button>
-        </form>
-        <form class="ui form" id="pMessage-form">
-          <div class="field">
-            <input type="text" name="pMessage" placeholder="message" />
-          </div>
-          <button class="ui button" type="submit">p Message</button>
-        </form>
-        <div class="ui" id="pMessages"></div>
-        <input id="testFile" type="file" /><button class="ui button" id="upload">
-          upload</button><button class="ui button" id="delete">delete</button>
-          
-      </div>
-    </main>
-  </body>
+    </div>
+  </main>
+</body>
 
-  </html>
+</html>
 </body>
 
 </html>
