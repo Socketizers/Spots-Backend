@@ -1,35 +1,33 @@
 const { socketIo } = require("../server");
 const { users, privateRooms } = require("../models/index");
-
+const { Op } = require("sequelize");
 socketIo.on("connection", (client) => {
-  client.on("join-private-room", async (userId, user2Id) => {
-    const user2 = await users.findOne({ id: user2Id });
-    if (user2.onlineStatus) {
-      client.join(userId + "|" + user2Id);
-      socketIo.emit(
-        "join-privet-room-user2",
-        userId,
-        user2Id,
-        userId + "|" + user2Id
-      );
-    }
+  client.on("join-private-room", (myId) => {
+    console.log("join-private-room", myId);
+    client.join(`${myId}`);
   });
+  client.on("new_private_message", async (myId, to, message) => {
+    if (!to) return;
 
-  client.on("join-privet-room-user2", (roomName) => {
-    client.join(roomName);
-  });
-
-  client.on("new_private_message", async (userId, user2Id, message) => {
-    console.log(`userId, user2Id, message`, userId, user2Id, message);
-    const ourRoom = await privateRooms.findOne({
-      where: { user1_id: userId, user2_id: user2Id },
+    console.log(myId, to, message);
+    let ourRoom = await privateRooms.findOne({
+      where: {
+        [Op.or]: [{ room_id: to + myId }, { room_id: myId + to }],
+      },
     });
-    const messageHistory = ourRoom.message_history || [];
-    messageHistory.push(message);
-    await ourRoom.update({ message_history: null });
+    if (!ourRoom)
+      ourRoom = await privateRooms.create({
+        room_id: myId + to,
+        user1_id: +myId,
+        user2_id: +to,
+      });
+    const messageHistory = ourRoom.message_history || {};
+    messageHistory[myId + "|" + new Date().toJSON()] = {
+      message,
+      time: new Date(),
+    };
+    console.log(messageHistory);
     await ourRoom.update({ message_history: messageHistory });
-    client.broadcast
-      .to(userId + "|" + user2Id)
-      .emit("new_private_message", userId, user2Id, message);
+    client.broadcast.to(to).emit("new_private_message", myId, to, message);
   });
 });

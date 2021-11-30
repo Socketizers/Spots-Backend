@@ -10,6 +10,8 @@ const bearer = require("../middleware/auth/bearer");
 
 const roomsCollection = new Collection(rooms);
 
+// ********************************** Get, Put, and Delete requests for rooms table *****************
+
 roomRoutes
   .route("/room/:id?")
   .get(async (req, res) => {
@@ -22,9 +24,9 @@ roomRoutes
   })
   .put(async (req, res) => {
     try {
-      let id = req.params.id;
-      let updateRoomInfo = req.body;
-      let updatedRoom = await roomsCollection.update(id, updateRoomInfo);
+      const id = req.params.id;
+      const updateRoomInfo = req.body;
+      const updatedRoom = await roomsCollection.update(id, updateRoomInfo);
       res.status(200).json(updatedRoom);
     } catch (error) {
       res.status(500).send(error);
@@ -32,20 +34,24 @@ roomRoutes
   })
   .delete(async (req, res) => {
     try {
-      let id = req.params.id;
-      let deletedRoom = await roomsCollection.delete(id);
+      const id = req.params.id;
+      const deletedRoom = await roomsCollection.delete(id);
       res.status(204).json(deletedRoom);
     } catch (error) {
       res.status(500).send(error);
     }
   });
 
-// Create new room for the server
+// *********************************** Create new room for the server *****************************
+
 roomRoutes.post("/room", async (req, res) => {
   try {
-    let roomInfo = req.body;
-    console.log(roomInfo);
-    let room = await roomsCollection.create(roomInfo);
+    // create room
+    const roomInfo = req.body;
+    // console.log(roomInfo);
+    const room = await roomsCollection.create(roomInfo);
+
+    //update server table
     servers.findOne({ where: { id: roomInfo.server_id } }).then((record) => {
       let roomNum;
       !record.rooms_num ? (roomNum = 1) : (roomNum = record.rooms_num + 1);
@@ -58,8 +64,8 @@ roomRoutes.post("/room", async (req, res) => {
   }
 });
 
-// Get Server Rooms
-roomRoutes.get("/rooms/server/:id", bearer, async (req, res) => {
+// ***************************************** Get Server Rooms ****************************************
+roomRoutes.get("/rooms/server/:id", async (req, res) => {
   try {
     const ServerRooms = await rooms.findAll({
       where: { server_id: req.params.id },
@@ -71,11 +77,12 @@ roomRoutes.get("/rooms/server/:id", bearer, async (req, res) => {
   }
 });
 
-// Join a Room
+// *********************************************** Join a Room ***************************************
+
 roomRoutes.put("/connect/room/:id", bearer, async (req, res) => {
   try {
-    let userId = req.user.id;
-    let roomId = req.params.id;
+    const userId = req.user.id;
+    const roomId = req.params.id;
 
     rooms.findOne({ where: { id: roomId } }).then((record) => {
       let usersList = record.users;
@@ -97,18 +104,19 @@ roomRoutes.put("/connect/room/:id", bearer, async (req, res) => {
   }
 });
 
-// Leave a room
+// ******************************************** Leave a room ***************************************
+
 roomRoutes.put("/disconnect/room/:id", bearer, async (req, res) => {
   try {
-    let userId = req.user.id;
-    let roomId = req.params.id;
+    const userId = req.user.id;
+    const roomId = req.params.id;
 
-    servers.findOne({ where: { id: roomId } }).then((record) => {
+    rooms.findOne({ where: { id: roomId } }).then((record) => {
       let usersList = record.users;
       if (!record.users || !usersList.includes(userId)) {
         res.status(201).json({ message: "User is not in this room" });
       } else {
-        let userIndex = usersList.indexOf(userId);
+        const userIndex = usersList.indexOf(userId);
         usersList.splice(userIndex, 1);
         record.update({ users: null });
         record.update({ users: usersList });
@@ -120,14 +128,15 @@ roomRoutes.put("/disconnect/room/:id", bearer, async (req, res) => {
   }
 });
 
-//Get the users connected to the room
+// ************************************* Get the users connected to the room ***********************
+
 roomRoutes.get("/connected/room/:id", bearer, async (req, res) => {
   try {
-    let roomId = req.params.id;
+    const roomId = req.params.id;
 
     const record = await rooms.findOne({ where: { id: roomId } });
     const usersList = record.users;
-    console.log(usersList);
+    // console.log(usersList);
 
     if (!record.users) {
       res
@@ -152,11 +161,12 @@ roomRoutes.get("/connected/room/:id", bearer, async (req, res) => {
   }
 });
 
-// General room new message
+// ************************************* General room new message **************************************
+
 roomRoutes.put("/message/room/:id", bearer, async (req, res) => {
   try {
-    let roomId = req.params.id;
-    let message = {
+    const roomId = req.params.id;
+    const message = {
       time: new Date(),
       username: req.user.username,
       message: req.body.message,
@@ -180,10 +190,11 @@ roomRoutes.put("/message/room/:id", bearer, async (req, res) => {
   }
 });
 
-// Render room messages
+// ******************************* Render room messages ************************
+
 roomRoutes.get("/message/room/:id", bearer, async (req, res) => {
   try {
-    let roomId = req.params.id;
+    const roomId = req.params.id;
 
     const record = await rooms.findOne({ where: { id: roomId } });
     const messagesList = record.message_history;
