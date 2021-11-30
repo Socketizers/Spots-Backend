@@ -6,6 +6,7 @@
 
 const privateRoomModel = (sequelize, DataTypes) =>
   sequelize.define("Private-Rooms", {
+
     room_id: { type: DataTypes.STRING },
     user1_id: { type: DataTypes.INTEGER, required: true },
     user2_id: { type: DataTypes.INTEGER, required: true },
@@ -18,6 +19,7 @@ const privateRoomModel = (sequelize, DataTypes) =>
       set(value) {
         return this.setDataValue("message_history", JSON.stringify(value));
       },
+
     },
   });
 
