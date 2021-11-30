@@ -1,0 +1,53 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    //- link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css")
+    script(defer, src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js") 
+    script(defer, src="/socket.io/socket.io.js") 
+    script(defer,type="module", src="../public/app.js") 
+  body
+    .ui.sizer.vertical.segment
+      header.ui.huge.header
+        h1 spots
+    main
+      #room.ui.grid
+        form#room-form.ui.form
+          .field     
+            input(type="text", name="name", placeholder="Name")
+            input.field(type="text", name="room", placeholder="Room")
+          button.ui.button(type="submit") Join 
+        form#message-form.ui.form
+          .field
+            input(type="text", name="message", placeholder="message")
+          button.ui.button(type="submit") message 
+        #messages.ui
+        hr#room.ui.grid
+        form#video-form.ui.form
+          .field 
+            select#media.ui.dropdown(name="media") 
+              option(value="screen") share screen 
+              option(value="camera") share camera
+            input(type="text", name="name", placeholder="Name")
+            input.field(type="text", name="roomVideo", placeholder="Video Room")
+          button.ui.button(type="submit") Join
+      #local-video.ui.video.fluid
+
+        #pRoom.ui.grid mock a privet chat
+        form#pRoom-form.ui.form
+          .field     
+            input(type="text", name="user1", placeholder="my id")
+            input.field(type="text", name="user2", placeholder="Room")
+          button.ui.button(type="submit") Join 
+        form#pMessage-form.ui.form
+          .field
+            input(type="text", name="pMessage", placeholder="message")
+          button.ui.button(type="submit") p Message 
+        #pMessages.ui
+        input#testFile(type="file")
+        button#upload.ui.button upload
+        button#delete.ui.button delete
