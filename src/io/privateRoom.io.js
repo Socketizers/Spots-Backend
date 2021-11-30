@@ -3,9 +3,13 @@ const { users, privateRooms } = require("../models/index");
 const { Op } = require("sequelize");
 socketIo.on("connection", (client) => {
   client.on("join-private-room", (myId) => {
-    client.join(myId);
+    console.log("join-private-room", myId);
+    client.join(`${myId}`);
   });
   client.on("new_private_message", async (myId, to, message) => {
+    if (!to) return;
+
+    console.log(myId, to, message);
     let ourRoom = await privateRooms.findOne({
       where: {
         [Op.or]: [{ room_id: to + myId }, { room_id: myId + to }],
