@@ -7,8 +7,8 @@ const errorHandler = require("./error-handlers/500");
 const logger = require("./middleware/logger");
 
 const serverRout = require("./routes/server.routes");
-const authRouts = require("./routes/auth.routes");
 const roomRoutes = require("./routes/room.routes");
+const authRouts = require("./routes/auth.routes");
 const privateRoomRoutes = require("./routes/private-room.routes");
 
 /*importing  createServer function from http module 
@@ -34,7 +34,22 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
+
+app.get("/demo", (req, res) => {
+  res.sendFile(__dirname +"/video.html");
+});
+app.get("/private-room", (req, res) => {
+  res.sendFile(__dirname +"/proom.html");
+});
+
+app.get("/chat", (req, res) => {
+  res.sendFile(__dirname +"/chat.html");
+});
+
+
+
 // root route to check if the server is working
+
 app.get("/", (req, res) => {
   res.send("Hello World 🤑");
 });

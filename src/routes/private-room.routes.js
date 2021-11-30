@@ -8,6 +8,7 @@ const Collection = require("../models/Collection");
 const { privateRooms } = require("../models/index");
 
 const bearer = require("../middleware/auth/bearer");
+const { Op } = require("sequelize");
 
 const privateRoomsCollection = new Collection(privateRooms);
 
@@ -46,13 +47,13 @@ privateRoomRoutes
     }
   });
 
+
 // *********************************** Create private room for two users *******************************
 
-privateRoomRoutes.post("/private-room", async (req, res) => {
+privateRoomRoutes.post("/private-room", bearer,async (req, res) => {
   try {
     const privateRoomInfo = req.body;
     const privateRoom = await privateRoomsCollection.create(privateRoomInfo);
-
     res.status(201).json(privateRoom);
   } catch (error) {
     res.status(500).send(error);
@@ -76,9 +77,31 @@ privateRoomRoutes.get("/user/private-room/:id", bearer, async (req, res) => {
   }
 });
 
+
+// get private rooms for two users (for private chat)
+
+privateRoomRoutes.get("/private-room/users/:id", bearer, async (req, res) => {
+  try {
+    const userPrivateRooms = await privateRooms.findOne({
+      where: {
+        [Op.or]: [
+          { room_id: req.params.id + req.user.id },
+          { room_id: req.user.id + req.params.id },
+        ],
+      },
+    });
+
+    res.status(200).json(userPrivateRooms);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
 // *********************************** Updating message history for a private room *******************************
 
-privateRoomRoutes.put("/message/private-room/:id", async (req, res) => {
+privateRoomRoutes.put("/message/private-room/:id", bearer,async (req, res) => {
+
   const privateRoom = await privateRooms.findOne({
     where: { id: req.params.id },
   });

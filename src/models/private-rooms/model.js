@@ -6,24 +6,20 @@
 
 const privateRoomModel = (sequelize, DataTypes) =>
   sequelize.define("Private-Rooms", {
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-      unique: true,
-    },
-    user1_id: {
-      type: DataTypes.INTEGER,
-      required: true,
-    },
-    user2_id: {
-      type: DataTypes.INTEGER,
-      required: true,
-    },
-    queues: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-    },
+
+    room_id: { type: DataTypes.STRING },
+    user1_id: { type: DataTypes.INTEGER, required: true },
+    user2_id: { type: DataTypes.INTEGER, required: true },
     message_history: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSONB,
+      defaultValue: null,
+      get() {
+        return JSON.parse(this.getDataValue("message_history"));
+      },
+      set(value) {
+        return this.setDataValue("message_history", JSON.stringify(value));
+      },
+
     },
   });
 

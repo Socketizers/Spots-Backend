@@ -101,6 +101,20 @@ authRoutes.post("/sign-in", basic, async (req, res) => {
   }
 });
 
+
+// Sign Out Route (editing online status for a user to edit last seen property)
+
+authRoutes.post("/sign-out",bearer, async(req, res) => {
+  try{
+    const user = await users.findOne({where: {id: req.user.id}});
+
+    await user.update({onlineStatus: false})
+  }catch(e){
+    res.status(500).json(e);
+  }
+})
+
+
 // ******************************************* Get all users (for the admin only) ***********************
 
 authRoutes.get(
@@ -115,6 +129,7 @@ authRoutes.get(
 );
 
 // ******************************************* Delete user (for the admin only) ***********************
+
 
 authRoutes.delete(
   "/user/:id",

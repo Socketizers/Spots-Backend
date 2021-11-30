@@ -17,8 +17,9 @@ storyRouter
   })
   .put(bearer, async (req, res) => {
     try {
+      console.log(req.params.id);
       let myStory = await userCol.get(req.user.id);
-      myStory = myStory.story;
+      myStory = myStory.story || {};  
       myStory[req.params.id] = req.body[req.params.id];
       console.log("myStory", myStory);
 
@@ -47,13 +48,32 @@ storyRouter
 module.exports = storyRouter;
 function storyTimeOut(userId, storyId) {
   setTimeout(async () => {
+    const { initializeApp } = require("firebase/app");
+
+    const { getStorage, ref, deleteObject } = require("firebase/storage");
+
+    const firebaseConfig = {
+      apiKey: process.env.apiKey,
+      authDomain: process.env.authDomain,
+      projectId: process.env.projectId,
+      storageBucket: process.env.storageBucket,
+      messagingSenderId: process.env.messagingSenderId,
+      appId: process.env.appId,
+      measurementId: process.env.measurementId,
+    };
+    const app = initializeApp(firebaseConfig);
+
+    const storage = getStorage(app);
     try {
       let myStory = await userCol.get(userId);
       myStory = myStory.story;
       delete myStory[storyId];
       await userCol.update(userId, { story: myStory });
+      const myRef = ref(storage, storyId);
+      // Delete the file
+      deleteObject(myRef);
     } catch (error) {
       console.log(error);
     }
-  }, 1000 * 60 * 60 * 24);
+  }, 30000);
 }
