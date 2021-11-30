@@ -113,7 +113,7 @@ roomRoutes.put("/disconnect/room/:id", bearer, async (req, res) => {
     const userId = req.user.id;
     const roomId = req.params.id;
 
-    servers.findOne({ where: { id: roomId } }).then((record) => {
+    rooms.findOne({ where: { id: roomId } }).then((record) => {
       let usersList = record.users;
       if (!record.users || !usersList.includes(userId)) {
         res.status(201).json({ message: "User is not in this room" });
