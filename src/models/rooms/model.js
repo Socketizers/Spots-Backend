@@ -6,9 +6,9 @@
 
 const roomModel = (sequelize, DataTypes) =>
   sequelize.define("Rooms", {
-    name:{
-      type:DataTypes.STRING,
-      require:true
+    name: {
+      type: DataTypes.STRING,
+      require: true,
     },
     server_id: {
       type: DataTypes.INTEGER,
@@ -31,14 +31,7 @@ const roomModel = (sequelize, DataTypes) =>
       defaultValue: 25,
     },
     message_history: {
-      type: DataTypes.JSONB,
-      defaultValue: null,
-      get() {
-        return JSON.parse(this.getDataValue("message_history"));
-      },
-      set(value) {
-        return this.setDataValue("message_history", JSON.stringify(value));
-      },
+      type: DataTypes.ARRAY(DataTypes.STRING),
     },
   });
 

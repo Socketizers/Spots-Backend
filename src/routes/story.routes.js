@@ -65,6 +65,7 @@ storyRouter
       await userCol.update(req.user.id, { story: myStory });
       deleteStoryFirebase(req.params.id);
       clearTimeout(storesTimer[req.params.id]);
+      delete storesTimer[req.params.id];
       res.status(200).json(myStory);
     } catch (error) {
       console.log(error);
@@ -78,6 +79,7 @@ function storyTimeOut(userId, storyId) {
       let myStory = await userCol.get(userId);
       myStory = myStory.story;
       delete myStory[storyId];
+      delete storesTimer[req.params.id];
       await userCol.update(userId, { story: myStory });
       deleteStoryFirebase(storyId);
     } catch (error) {
