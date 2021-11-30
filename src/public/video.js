@@ -1,6 +1,6 @@
 const myPeer = new Peer(undefined, {
   secure: true,
-  host: "peertestjs.herokuapp.com",
+  host: "spotspeer.herokuapp",
   port: 443,
 });
 const socket = io();
@@ -18,7 +18,7 @@ const roomList = document.getElementById("room-list");
 //----------------------------------------
 
 async function roomsList() {
-  const roomsRes = await fetch("http://localhost:8080/rooms/server/1");
+  const roomsRes = await fetch("https://socketizers.herokuapp.com/1");
   console.log(roomsRes);
   const allRooms = await roomsRes.json();
   console.log(allRooms);

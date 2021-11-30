@@ -9,7 +9,9 @@ const roomList = document.getElementById("room-list");
 let roomName;
 
 async function roomsList() {
-  const roomsRes = await fetch(`http://localhost:8080/rooms/server/1`);
+  const roomsRes = await fetch(
+    `https://socketizers.herokuapp.com/rooms/server/1`
+  );
   const allRooms = await roomsRes.json();
   allRooms.forEach((room) => {
     let roomElement = document.createElement("button");

@@ -27,7 +27,10 @@ async function roomsList() {
     headers: myHeaders,
     redirect: "follow",
   };
-  const users = await fetch("http://localhost:8080/users", requestOptions);
+  const users = await fetch(
+    "https://socketizers.herokuapp.com/users",
+    requestOptions
+  );
   allUsers = await users.json();
   userList.innerHTML = "<h2>Friends messages</h2>";
   allUsers.forEach((user) => {
@@ -48,7 +51,7 @@ userList.addEventListener("click", async (e) => {
     idUser2 = e.target.value;
     try {
       const chat = await fetch(
-        `http://localhost:8080/private-room/users/${idUser2}`,
+        `https://socketizers.herokuapp.com/users/${idUser2}`,
         requestOptions
       );
       const all = await chat.json();
@@ -89,7 +92,7 @@ singInForm.addEventListener("submit", async (e) => {
     );
 
     const userInfo = await fetch(
-      "http://localhost:8080/sign-in",
+      "https://socketizers.herokuapp.com/sign-in",
       requestOptions
     );
     if (userInfo.status === 403) {
