@@ -47,10 +47,9 @@ privateRoomRoutes
     }
   });
 
-
 // *********************************** Create private room for two users *******************************
 
-privateRoomRoutes.post("/private-room", bearer,async (req, res) => {
+privateRoomRoutes.post("/private-room", bearer, async (req, res) => {
   try {
     const privateRoomInfo = req.body;
     const privateRoom = await privateRoomsCollection.create(privateRoomInfo);
@@ -77,31 +76,26 @@ privateRoomRoutes.get("/user/private-room/:id", bearer, async (req, res) => {
   }
 });
 
-
 // get private rooms for two users (for private chat)
 
 privateRoomRoutes.get("/private-room/users/:id", bearer, async (req, res) => {
   try {
+    const userId = `${req.params.id}${req.user.id}`;
+    const user2Id = `${req.user.id}${req.params.id}`;
     const userPrivateRooms = await privateRooms.findOne({
       where: {
-        [Op.or]: [
-          { room_id: req.params.id + req.user.id },
-          { room_id: req.user.id + req.params.id },
-        ],
+        [Op.or]: [{ room_id: userId }, { room_id: user2Id }],
       },
     });
-
     res.status(200).json(userPrivateRooms);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-
 // *********************************** Updating message history for a private room *******************************
 
-privateRoomRoutes.put("/message/private-room/:id", bearer,async (req, res) => {
-
+privateRoomRoutes.put("/message/private-room/:id", bearer, async (req, res) => {
   const privateRoom = await privateRooms.findOne({
     where: { id: req.params.id },
   });

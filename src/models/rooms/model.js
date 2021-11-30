@@ -6,9 +6,9 @@
 
 const roomModel = (sequelize, DataTypes) =>
   sequelize.define("Rooms", {
-    name:{
-      type:DataTypes.STRING,
-      require:true
+    name: {
+      type: DataTypes.STRING,
+      require: true,
     },
     server_id: {
       type: DataTypes.INTEGER,

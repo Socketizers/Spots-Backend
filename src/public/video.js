@@ -18,7 +18,7 @@ const roomList = document.getElementById("room-list");
 //----------------------------------------
 
 async function roomsList() {
-  const roomsRes = await fetch("http://localhost:8080/rooms/server/1");
+  const roomsRes = await fetch("http://localhost:5000/rooms/server/1");
   console.log(roomsRes);
   const allRooms = await roomsRes.json();
   console.log(allRooms);

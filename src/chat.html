@@ -9,36 +9,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
     <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
     <script defer src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="public/style.css">
     <script defer src="public/chat.js"></script>
   </head>
 
   <body>
-      <header>
-        <h1>spots</h1>
-        <nav>
-          <a href="./video.html">Video Chat</a>
-        </nav>
-      </header>
+    <header>
+      <img src="/public/logo.png" alt="">
+    </header>
     
     <main>
 
       <div id="room-list" class="side-bar">
-        <button value=""></button>
+        <form  id="join-room-form">
+          <input type="text" name="name" placeholder="Enter Your Name" id="nameHolder"/>
+          <button type="submit">Submit your name</button>
+        </form>
+        <button type="submit" id="start-chat">Start Chat</button>
       </div>
 
-      <form  id="join-room-form">
-      <input type="text" name="name" placeholder="Name" />
-      <input type="text" name="room" placeholder="Room" />
-      <button type="submit">Join</button>
-      </form>
-
-
-      <form id="message-form"> 
-        <input type="text" name="message" placeholder="message" />
-        <button type="submit">message</button> 
-      </form>
+      
         
-      <div id="messages"></div>
+      <div id="messages" class= "chat-area">
+        <div id="messages-area">
+
+        </div>
+        <form id="message-form"> 
+          <input type="text" name="message" placeholder="message" />
+          <button type="submit">Send</button> 
+        </form>
+      </div>
 
     </main>
   </body>
