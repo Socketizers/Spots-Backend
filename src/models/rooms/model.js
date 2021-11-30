@@ -27,7 +27,14 @@ const roomModel = (sequelize, DataTypes) =>
       defaultValue: 25,
     },
     message_history: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.JSONB,
+      defaultValue: null,
+      get() {
+        return JSON.parse(this.getDataValue("message_history"));
+      },
+      set(value) {
+        return this.setDataValue("message_history", JSON.stringify(value));
+      },
     },
   });
 
