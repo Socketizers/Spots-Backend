@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
     <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
     <script defer src="/socket.io/socket.io.js"></script>
-    <link rel="stylesheet" href="public/style.css">
+    <link rel="stylesheet" href="public/chat.css">
     <script defer src="public/chat.js"></script>
   </head>
 
@@ -21,11 +21,14 @@
     <main>
 
       <div id="room-list" class="side-bar">
+        <h2>Server Name</h2>
+        <div id="roomsDiv"></div>
         <form  id="join-room-form">
-          <input type="text" name="name" placeholder="Enter Your Name" id="nameHolder"/>
-          <button type="submit">Submit your name</button>
+          <input type="text" name="name" placeholder="Enter Your Name" class="nameHolder"/>
+          <!-- <button type="submit">Submit your name</button> -->
+          <button type="submit" id="start-chat">Start Chat</button>
         </form>
-        <button type="submit" id="start-chat">Start Chat</button>
+        <!-- <button type="submit" id="start-chat">Start Chat</button> -->
       </div>
 
       

@@ -8,6 +8,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
   <link rel="stylesheet" href="public/style.css">
+  <link rel="stylesheet" href="public/chat.css">
   <script defer src="/socket.io/socket.io.js"></script>
   <script defer type="module" src="public/proom.js"></script>
 </head>
@@ -53,17 +54,15 @@
     </div>
     </div>
     </div>
-    <div class="chat-area"></div>
-    <div class="ui one column container" id="room">
-      <form class="ui form" id="pMessage-form">
-        <div class="field">
-          <input type="text" name="pMessage" placeholder="message" />
-        </div>
-        <button class="ui button" type="submit">p Message</button>
+
+    <div id="messages" class="chat-area">
+      <div id="messages-area">
+
+      </div>
+      <form id="message-form">
+        <input type="text" name="message" placeholder="message" />
+        <button type="submit">Send</button>
       </form>
-      <div class="ui" id="pMessages"></div>
-
-
     </div>
   </main>
 </body>
