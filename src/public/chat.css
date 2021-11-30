@@ -73,43 +73,59 @@ img {
 #chatRoom {
   background-color: rgba(7, 42, 64, 0.795);
   color: #ff9000;
+  text-align: center;
+  border-radius: 10px;
+  height: 1.5em;
 }
 
 .right-message {
   background-color: rgb(7, 42, 64);
   color: #ff9000;
-  float: left;
+  margin-left: 50%;
+  text-align: right;
+  border-radius: 10px;
+  padding-right: 20px;
 }
 
-.right-message {
+.left-message {
   background-color: #ff9000;
   color: rgb(7, 42, 64);
-  float: right;
+  width: 50%;
+  text-align: left;
+  border-radius: 10px;
+  padding-left: 20px;
 }
 
-#message-form {
-  display: fixed;
-  bottom: 0%;
-  height: 20%;
+#message-form input {
+  background-color: rgba(168, 168, 168, 0.719);
+  width: 78%;
+  height: 3em;
+  border-radius: 10px;
+}
+
+#message-form button {
+  background-color: #ff9000;
+  width: 20%;
+  height: 3em;
+  border-radius: 10px;
 }
 
 #messages-area {
   overflow: scroll;
-  height: 80%;
+  height: 38rem;
   width: 100%;
 }
-/* 
-.chat-area button {
-  width: 3em;
-  height: 3em;
-  background-color: #26262694;
+
+.nameHolder {
   color: white;
   border: none;
   border-radius: 2px;
   padding: 1px 20px;
-  cursor: pointer;
+  text-transform: none;
+  display: block;
+  width: 11em;
   height: 2em;
   text-align: left;
-  margin: 0.1em;
+  margin: 1em;
   font-size: 18px;
-} */
+}

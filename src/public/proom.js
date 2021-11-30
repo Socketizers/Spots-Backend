@@ -26,7 +26,7 @@ async function roomsList() {
     headers: myHeaders,
     redirect: "follow",
   };
-  const users = await fetch("http://localhost:5000/users", requestOptions);
+  const users = await fetch("http://localhost:8080/users", requestOptions);
   const allUsers = await users.json();
   userList.innerHTML = "<h2>Server Name</h2>";
   allUsers.forEach((user) => {
