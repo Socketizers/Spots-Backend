@@ -16,8 +16,9 @@ const servers = (sequelize, DataTypes) =>
       required: true,
     },
     category: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("Education","Entertainment","Sport","Career","Financial","General"),
       required: true,
+      defaultValue:"General"
     },
     user_id: {
       type: DataTypes.INTEGER,

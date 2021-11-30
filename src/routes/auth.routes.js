@@ -162,9 +162,9 @@ authRoutes.delete(
 
 // ********************* Post request (will be called when user wants to add another user) ****************
 
-authRoutes.post("/friends", async (req, res) => {
+authRoutes.post("/friends", bearer,async (req, res) => {
   const request = {
-    user1_id: req.body.user1_id,
+    user1_id: req.user.id,
     user2_id: req.body.user2_id,
   };
   const sendRequest = await friendRequestCollection.create(request);
@@ -174,9 +174,19 @@ authRoutes.post("/friends", async (req, res) => {
 
 // ********************* Get request (will be called to list the pending requests fo a user) ****************
 
-authRoutes.get("/friends/:id", async (req, res) => {
+authRoutes.get("/friends/sent-request", bearer, async (req, res) => {
   const friendRequests = await friendRequest.findAll({
-    where: { user1_id: req.params.id },
+    where: { user1_id: req.user.id },
+  });
+  res.status(200).json(friendRequests);
+});
+
+
+// ********************* Get request (will be called to list the pending requests for a user) ****************
+
+authRoutes.get("/friends/new-request", bearer, async (req, res) => {
+  const friendRequests = await friendRequest.findAll({
+    where: { user2_id: req.user.id },
   });
   res.status(200).json(friendRequests);
 });
@@ -199,6 +209,7 @@ authRoutes.put("/friends/:id", async (req, res) => {
 
     userFriends.push(updatedRequest.user2_id);
 
+    await user.update({ friends: null });
     await user.update({ friends: userFriends });
 
     /// updating user2 friend list
@@ -208,16 +219,18 @@ authRoutes.put("/friends/:id", async (req, res) => {
     let user2Friends = user2.friends || [];
 
     user2Friends.push(updatedRequest.user1_id);
-
+    await user2.update({ friends: null });
     await user2.update({ friends: user2Friends });
   }
+  
+  await friendRequestCollection.delete(req.params.id);
 
   res.status(200).json(updatedRequest);
 });
 
 // ********************* Delete request (to delete the request from friends table) ****************
 
-authRoutes.delete("/friends/:id", async (req, res) => {
+authRoutes.delete("/friends/:id",bearer, async (req, res) => {
   const deletedRequest = await friendRequestCollection.delete(req.params.id);
   res.status(204).json(deletedRequest);
 });
