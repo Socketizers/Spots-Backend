@@ -6,7 +6,7 @@ const socket = io();
 // ********* Create peer ************
 const myPeer = new Peer(undefined, {
   secure: true,
-  host: "spotspeer.herokuapp",
+  host: "spotspeer.herokuapp.com",
   port: 443,
 });
 

@@ -20,7 +20,7 @@ socketIo.on("connection", (socket) => {
      when the socket is disconnected 
     */
     socket.on("disconnect", () => {
-      socket.to(room).broadcast.emit("user-disconnected", peerId);
+      socket.broadcast.to(room).emit("user-disconnected", peerId);
     });
   });
 });
