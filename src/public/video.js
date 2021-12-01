@@ -18,7 +18,7 @@ const roomList = document.getElementById("room-list");
 //----------------------------------------
 
 async function roomsList() {
-  const roomsRes = await fetch("https://socketizers.herokuapp.com/1");
+  const roomsRes = await fetch("https://socketizers.herokuapp.com/rooms/server/1");
   console.log(roomsRes);
   const allRooms = await roomsRes.json();
   console.log(allRooms);
