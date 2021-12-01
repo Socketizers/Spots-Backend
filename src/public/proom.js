@@ -51,7 +51,7 @@ userList.addEventListener("click", async (e) => {
     idUser2 = e.target.value;
     try {
       const chat = await fetch(
-        `https://socketizers.herokuapp.com/users/${idUser2}`,
+        `https://socketizers.herokuapp.com/private-room/users/${idUser2}`,
         requestOptions
       );
       const all = await chat.json();
