@@ -101,6 +101,24 @@ authRoutes.post("/sign-in", basic, async (req, res) => {
   }
 });
 
+authRoutes.post("/log-in", bearer, async (req, res) => {
+  try {
+    const user = {
+      user: req.user,
+      token: req.user.token,
+    };
+
+    users.findOne({ where: { id: user.user.id } }).then((user) => {
+      user.update({
+        onlineStatus: true,
+      });
+    });
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+});
+
 
 // Sign Out Route (editing online status for a user to edit last seen property)
 
