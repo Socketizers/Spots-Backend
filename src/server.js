@@ -64,7 +64,13 @@ app.use(privateRoomRoutes);
 // creating a server that will enable socket io to connect with this server
 const server = createServer(app);
 const io = require("socket.io");
-const socketIo = io(server);
+const socketIo = io(server,{
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  }
+});
 
 // error handlers using
 app.use("*", pageNotFound);
