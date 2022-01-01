@@ -28,4 +28,8 @@ socketIo.on("connection", (socket) => {
   socket.on("new_message", (message, userInfo) => {
     socket.broadcast.to(roomName).emit("new_message", message, userInfo);
   });
+
+  socket.on("leave", (room) => {
+    socket.leave(room)
+  })
 });
