@@ -3,7 +3,7 @@
 const { socketIo } = require("../server");
 
 // roomName assigned as a global variable to be used in new_message event
-let roomName = "";
+// let roomName = "";
 
 socketIo.on("connection", (socket) => {
   // console.log(socket.id);
@@ -14,7 +14,6 @@ socketIo.on("connection", (socket) => {
   3. userInfo and room will be passed using a form that has a listener on submit in app.js 
   */
   socket.on("join_text", (userInfo, room) => {
-    roomName = room;
     socket.join(room);
     // socket.to(roomName).emit("connected", userInfo);
   });
@@ -25,8 +24,8 @@ socketIo.on("connection", (socket) => {
   3. message will be passed using from that has a listener on submit, and userInfo 
   will be stored as a global variable in app.js.  
   */
-  socket.on("new_message", (message, userInfo) => {
-    socket.broadcast.to(roomName).emit("new_message", message, userInfo);
+  socket.on("new_message", (message, userInfo, room) => {
+    socket.broadcast.to(room).emit("new_message", message, userInfo);
   });
 
   socket.on("leave", (room) => {
