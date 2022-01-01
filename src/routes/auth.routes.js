@@ -176,6 +176,46 @@ authRoutes.delete(
   }
 );
 
+
+// ***************************************** User Friend List ***********************************
+
+
+authRoutes.get("/user/friends", bearer, async (req, res) => {
+  try {
+    const record = await users.findOne({ where: { id: req.user.id } });
+    const usersList = record.dataValues.friends;
+
+    if (!usersList.length) {
+      res
+        .status(200)
+        .json({users:[], message: "There is no friends!" });
+    } else {
+      let usersArr = await Promise.all(
+        usersList.map(async (userId) => {
+          console.log(userId);
+          let user = await users.findOne({ where: { id: userId } });
+          return {
+            id: user.dataValues.id,
+            username: user.dataValues.username,
+            fullName: user.dataValues.fullName,
+            image: user.dataValues.image,
+            story:user.dataValues.story,
+            onlineStatus:user.dataValues.onlineStatus,
+          };
+        })
+      );
+
+      res.status(201).send({users:usersArr, message:"Friends list returned successfully"});
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
+
+
 // ***************************************** Friend Requests Operations ***********************************
 
 // ********************* Post request (will be called when user wants to add another user) ****************
