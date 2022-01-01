@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+    <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+    <script defer src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="public/chat.css">
+    <script defer src="public/chat.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <img src="/public/logo.png" alt="">
+    </header>
+    
+    <main>
+
+      <div id="room-list" class="side-bar">
+        <h2>Server Name</h2>
+        <div id="roomsDiv"></div>
+        <form  id="join-room-form">
+          <input type="text" name="name" placeholder="Enter Your Name" class="nameHolder"/>
+          <!-- <button type="submit">Submit your name</button> -->
+          <button type="submit" id="start-chat">Start Chat</button>
+        </form>
+        <!-- <button type="submit" id="start-chat">Start Chat</button> -->
+      </div>
+
+      
+        
+      <div id="messages" class= "chat-area">
+        <div id="messages-area">
+
+        </div>
+        <form id="message-form"> 
+          <input type="text" name="message" placeholder="message" />
+          <button type="submit">Send</button> 
+        </form>
+      </div>
+
+    </main>
+  </body>
+
+  </html>
+</body>
+
+</html>

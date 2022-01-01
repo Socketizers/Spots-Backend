@@ -4,9 +4,10 @@
   "description": "Spots is a chat app for people to connect together and share their stories, inspirations, ideas, hobbies and talents. The app is for people on work groups, language groups, gaming clans, school groups, and anything like that. The users can create the groups they want to and invite all the people they want to them. Everybody joins in, chats it up, and has a good time. Beside, the application enable the users to organize thier groups into various channels similar to apps like Discord and Slack. Users can also directly message individuals and add calendar events for group activities. Another feature the application provide is the user can make a conference room where there is a presenter and audience and the presenter has all the controll.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest",
-    "dev": "nodemon index.js"
+    "start": "NODE_ENV=production node index.js",
+    "test": "NODE_ENV=test jest",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "init": "sequelize db:create"
   },
   "repository": {
     "type": "git",
@@ -22,14 +23,20 @@
   "dependencies": {
     "base-64": "^1.0.0",
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "firebase": "^9.5.0",
+    "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.3",
     "pg": "^8.7.1",
+    "pug": "^3.0.2",
     "sequelize": "^6.12.0-alpha.1",
     "sequelize-cli": "^6.3.0",
     "socket.io": "^4.4.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "util": "^0.12.4"
   },
   "devDependencies": {
     "jest": "^27.3.1",
