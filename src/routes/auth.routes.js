@@ -246,7 +246,17 @@ authRoutes.get("/friends/new-request", bearer, async (req, res) => {
   const friendRequests = await friendRequest.findAll({
     where: { user2_id: req.user.id },
   });
-  res.status(200).json(friendRequests);
+  let usersArr = await Promise.all(
+    friendRequests.map(async (requ) => {
+      let user = await users.findOne({ where: { id: requ.user1_id } });
+      return {
+        username: user.dataValues.username,
+        fullName: user.dataValues.fullName,
+        image: user.dataValues.image,
+      };
+    })
+  );
+  res.status(200).json({request:friendRequests, users:usersArr});
 });
 
 // ********************* Put request (will be called when a user respond to a request from another user) ****************
