@@ -250,6 +250,8 @@ authRoutes.get("/friends/new-request", bearer, async (req, res) => {
     friendRequests.map(async (requ) => {
       let user = await users.findOne({ where: { id: requ.user1_id } });
       return {
+        reqId:requ.id,
+        userId:user.dataValues.id,
         username: user.dataValues.username,
         fullName: user.dataValues.fullName,
         image: user.dataValues.image,
