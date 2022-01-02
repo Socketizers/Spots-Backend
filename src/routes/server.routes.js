@@ -89,7 +89,7 @@ serverRouts
 
 // ***************************** Getting Servers without Bearer ****************************
 
-serverRouts.get("/server/v1/:id?", async (req, res) => {
+serverRouts.get("/get-servers/v1/:id?", async (req, res) => {
   try {
     if(req.params.id){
       const server = await serversCollection.get(req.params.id);
