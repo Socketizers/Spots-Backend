@@ -87,6 +87,22 @@ serverRouts
     }
   });
 
+// ***************************** Getting Servers without Bearer ****************************
+
+serverRouts.get("/server/v1/:id?", async (req, res) => {
+  try {
+    if(req.params.id){
+      const server = await serversCollection.get(req.params.id);
+      res.status(200).send(server);
+    }else{
+      const allServers = await serversCollection.get();
+      res.status(200).send(allServers);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+})
+
 // ***************************** Create New Server ****************************
 serverRouts.post(
   "/user/server",
