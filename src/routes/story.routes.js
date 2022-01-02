@@ -84,5 +84,5 @@ function storyTimeOut(userId, storyId) {
     } catch (error) {
       console.log(error);
     }
-  }, 5*60000);
+  }, 60*60000);
 }
