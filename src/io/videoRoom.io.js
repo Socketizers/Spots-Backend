@@ -22,5 +22,8 @@ socketIo.on("connection", (socket) => {
     socket.on("disconnect", () => {
       socket.broadcast.to(room).emit("user-disconnected", peerId);
     });
+    socket.on("peer-disconnect", () => {
+      socket.broadcast.to(room).emit("user-disconnected", peerId);
+    });
   });
 });
