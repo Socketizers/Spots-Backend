@@ -66,9 +66,14 @@ privateRoomRoutes.get("/user/private-room/:id", bearer, async (req, res) => {
     const userId = req.params.id;
 
     const userPrivateRooms = await Promise.all([
-      privateRooms.findAll({ where: { user1_id: userId } }),
-      privateRooms.findAll({ where: { user2_id: userId } }),
+      privateRooms.findAll({ where: {
+        [Op.or]: [{ user1_id: userId }, { user2_id: userId }],
+      } }),
     ]);
+    // const userPrivateRooms = await Promise.all([
+    //   privateRooms.findAll({ where: { user1_id: userId } }),
+    //   privateRooms.findAll({ where: { user2_id: userId } }),
+    // ]);
 
     res.status(200).json(userPrivateRooms);
   } catch (error) {
