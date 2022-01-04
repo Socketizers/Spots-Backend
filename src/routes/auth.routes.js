@@ -146,6 +146,17 @@ authRoutes.get(
   }
 );
 
+// ******************************************* Get one user Info  ***********************
+
+authRoutes.get(
+  "/users/one-user/:id",
+  bearer,
+  async (req, res, next) => {
+    const user = await users.findOne({where: {id: req.params.id}});
+    res.status(200).json(user);
+  }
+);
+
 // ******************************************* Delete user (for the admin only) ***********************
 
 
