@@ -153,7 +153,12 @@ authRoutes.get(
   bearer,
   async (req, res, next) => {
     const user = await users.findOne({where: {id: req.params.id}});
-    res.status(200).json(user);
+    res.status(200).json({
+      id: user.id,
+      username: user.username,
+      image: user.image,
+      fullName: user.fullName
+    });
   }
 );
 
