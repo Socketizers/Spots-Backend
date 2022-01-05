@@ -27,8 +27,7 @@ const servers = (sequelize, DataTypes) =>
     image: {
       type: DataTypes.STRING,
       required: true,
-      defaultValue:
-        "https://img.favpng.com/12/19/14/discord-internet-bot-user-avatar-computer-servers-png-favpng-pMhCmZvgHpA9cT20mtKY40a0t.jpg",
+      defaultValue: null,
     },
     public: {
       type: DataTypes.BOOLEAN,

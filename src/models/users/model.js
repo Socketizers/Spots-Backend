@@ -29,8 +29,7 @@ const User = (sequelize, DataTypes) => {
     // *************************************** image *************
     image: {
       type: DataTypes.STRING,
-      defaultValue:
-        "https://i2.wp.com/www.cycat.io/wp-content/uploads/2018/10/Default-user-picture.jpg?resize=300%2C300",
+      defaultValue:null,
     },
     // *************************************** password *************
     password: {
