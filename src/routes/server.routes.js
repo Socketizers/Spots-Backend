@@ -261,6 +261,7 @@ serverRouts.get("/connected/server/:id", bearer, async (req, res) => {
             username: user.dataValues.username,
             fullName: user.dataValues.fullName,
             image: user.dataValues.image,
+            id: user.dataValues.id
           };
         })
       );
