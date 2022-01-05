@@ -14,7 +14,8 @@ socketIo.on("connection", (socket) => {
   3. userInfo and room will be passed using a form that has a listener on submit in app.js 
   */
   socket.on("join_text", (userInfo, room) => {
-    socket.join(room);
+    socket.join(room.id);
+    console.log(userInfo, room.id);
     // socket.to(roomName).emit("connected", userInfo);
   });
 
@@ -25,10 +26,12 @@ socketIo.on("connection", (socket) => {
   will be stored as a global variable in app.js.  
   */
   socket.on("new_message", (message, userInfo, room) => {
-    socket.broadcast.to(room).emit("new_message", message, userInfo);
+    console.log(room);
+    socket.broadcast.to(room.id).emit("new_message", message, userInfo);
   });
 
   socket.on("leave", (room) => {
-    socket.leave(room)
-  })
+    console.log(room);
+    socket.leave(room.id);
+  });
 });
