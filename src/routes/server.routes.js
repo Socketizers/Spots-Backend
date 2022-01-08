@@ -43,11 +43,16 @@ const upload = multer({
 // ********************************** Get, Put, and Delete requests for servers table *****************
 
 serverRouts
-  .route("/server/:id")
+  .route("/server/:id?")
   .get(bearer, async (req, res) => {
     try {
-      const allServers = await serversCollection.get(req.params.id);
-      res.status(200).send(allServers);
+      if(req.params.id){
+        const server = await serversCollection.get(req.params.id);
+        res.status(200).send(server);
+      }else{
+        const allServers = await serversCollection.get();
+        res.status(200).send(allServers);
+      }
     } catch (error) {
       res.status(500).send(error);
     }
@@ -81,6 +86,22 @@ serverRouts
       res.status(500).send(error);
     }
   });
+
+// ***************************** Getting Servers without Bearer ****************************
+
+serverRouts.get("/get-servers/v1/:id?", async (req, res) => {
+  try {
+    if(req.params.id){
+      const server = await serversCollection.get(req.params.id);
+      res.status(200).send(server);
+    }else{
+      const allServers = await serversCollection.get();
+      res.status(200).send(allServers);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+})
 
 // ***************************** Create New Server ****************************
 serverRouts.post(
@@ -240,6 +261,7 @@ serverRouts.get("/connected/server/:id", bearer, async (req, res) => {
             username: user.dataValues.username,
             fullName: user.dataValues.fullName,
             image: user.dataValues.image,
+            id: user.dataValues.id
           };
         })
       );

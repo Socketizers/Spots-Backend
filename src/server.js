@@ -34,19 +34,16 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
-
 app.get("/demo", (req, res) => {
-  res.sendFile(__dirname +"/video.html");
+  res.sendFile(__dirname + "/video.html");
 });
 app.get("/private-room", (req, res) => {
-  res.sendFile(__dirname +"/proom.html");
+  res.sendFile(__dirname + "/proom.html");
 });
 
 app.get("/chat", (req, res) => {
-  res.sendFile(__dirname +"/chat.html");
+  res.sendFile(__dirname + "/chat.html");
 });
-
-
 
 // root route to check if the server is working
 
@@ -64,7 +61,13 @@ app.use(privateRoomRoutes);
 // creating a server that will enable socket io to connect with this server
 const server = createServer(app);
 const io = require("socket.io");
-const socketIo = io(server);
+const socketIo = io(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  },
+});
 
 // error handlers using
 app.use("*", pageNotFound);
@@ -86,3 +89,4 @@ module.exports = {
 require("./io/server.io");
 require("./io/videoRoom.io");
 require("./io/privateRoom.io");
+require("./io/simplePeer.io");
