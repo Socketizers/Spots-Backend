@@ -47,27 +47,27 @@ const friendRequestCollection = new Collection(friendRequest);
 
 // ******************************************* Sign up ***************************************************
 
-authRoutes.post("/sign-up", upload.single("image"), async (req, res, next) => {
+authRoutes.post("/sign-up",  async (req, res) => {
   try {
     // check if the user didn't upload an image set the default one
-    const user = req.file
-      ? {
-          username: req.body.username,
-          fullName: req.body.fullName,
-          image: req.file.path,
-          password: req.body.password,
-          role: req.body.role,
-          onlineStatus: true,
-          email: req.body.email,
-        }
-      : {
-          username: req.body.username,
-          fullName: req.body.fullName,
-          password: req.body.password,
-          role: req.body.role,
-          onlineStatus: true,
-          email: req.body.email,
-        };
+    const user = req.body;
+//       ? {
+//           username: req.body.username,
+//           fullName: req.body.fullName,
+//           image: req.file.path,
+//           password: req.body.password,
+//           role: req.body.role,
+//           onlineStatus: true,
+//           email: req.body.email,
+//         }
+//       : {
+//           username: req.body.username,
+//           fullName: req.body.fullName,
+//           password: req.body.password,
+//           role: req.body.role,
+//           onlineStatus: true,
+//           email: req.body.email,
+//         };
 
     let userRecord = await users.create(user);
     const output = {
