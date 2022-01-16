@@ -111,6 +111,7 @@ serverRouts.post(
     try {
       // check if the user didn't upload an image set the default one
       const serverInfo = req.body;
+      serverInfo.user_id = req.user.id;
 //         ? {
 //             name: req.body.name,
 //             description: req.body.description,
