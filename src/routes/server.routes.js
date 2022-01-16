@@ -107,26 +107,9 @@ serverRouts.get("/get-servers/v1/:id?", async (req, res) => {
 serverRouts.post(
   "/user/server",
   bearer,
-  upload.single("image"),
   async (req, res) => {
     try {
-      // check if the user didn't upload an image set the default one
-      const serverInfo = req.file
-        ? {
-            name: req.body.name,
-            description: req.body.description,
-            category: req.body.category,
-            image: req.file.path,
-            user_id: req.user.id,
-            public: true,
-          }
-        : {
-            name: req.body.name,
-            description: req.body.description,
-            category: req.body.category,
-            user_id: req.user.id,
-            public: true,
-          };
+      const serverInfo = req.body;
 
       const newServer = await serversCollection.create(serverInfo);
       res.status(201).json(newServer);
